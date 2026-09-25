@@ -14,7 +14,7 @@ export default function Dashboard({ stats, sales }) {
         <Card title="Pending"         value={formatCurrency(stats.receivable)}    subtext="Customer Debt"     icon={CreditCard} />
         <Card title="Received"        value={formatCurrency(stats.received)}      subtext="Cash Collected"    icon={Wallet}     />
         <div className="col-span-2 sm:col-span-1 md:col-span-2 lg:col-span-1">
-          <Card title="Stock Available" value={`${stats.stockCount} Items`}         subtext={`Val: ${formatCurrency(stats.stockValue)}`} icon={Package} isAmber />
+          <Card title="Stock Available" value={`${stats.stockCount} Items`}         subtext={`Val: ${formatCurrency(stats.stockValue)}`} icon={Package} highlight />
         </div>
       </div>
 

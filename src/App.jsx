@@ -159,11 +159,11 @@ export default function App() {
      };
   }, [inventory, sales, customers]);
 
-  if (authLoading) return <div className="h-viewport flex items-center justify-center" style={{ background: '#131920' }}><LoadingSpinner /></div>;
+  if (authLoading) return <div className="h-viewport flex items-center justify-center bg-base"><LoadingSpinner /></div>;
   if (!user) return <Auth />;
 
   return (
-    <div className="flex min-h-viewport md:h-viewport font-sans md:overflow-hidden" style={{ background: '#131920', color: '#F0F4F8' }}>
+    <div className="flex min-h-viewport md:h-viewport font-sans md:overflow-hidden bg-base text-fg">
       <ToastContainer toasts={toasts} removeToast={removeToast} />
       
       {/* GLOBAL MODAL */}
@@ -187,9 +187,9 @@ export default function App() {
       />
       
       <div className="flex-1 flex flex-col min-w-0 md:h-full md:overflow-hidden relative" style={{ paddingLeft: 'var(--safe-left)', paddingRight: 'var(--safe-right)' }}>
-         <div className="md:hidden sticky top-0 z-[25] flex shrink-0 justify-between items-center px-4" style={{ background: '#131920', borderBottom: '0.5px solid #2E3A47', height: 'var(--mobile-header-h)', paddingTop: 'var(--safe-top)' }}>
-            <button onClick={() => setMobileMenuOpen(true)} aria-label="Open menu" className="p-2.5 rounded-lg active:scale-95 transition-transform" style={{ background: 'rgba(245,166,35,0.12)', color: '#F5A623' }}><Menu size={20}/></button>
-            <h2 className="font-semibold uppercase tracking-wider text-xs truncate px-2" style={{ color: '#8D9BAA' }}>{menuItems.find(m => m.id === activeTab)?.label ?? activeTab}</h2>
+         <div className="md:hidden sticky top-0 z-[25] flex shrink-0 justify-between items-center px-3 bg-base/95 backdrop-blur border-b border-line" style={{ height: 'var(--mobile-header-h)', paddingTop: 'var(--safe-top)' }}>
+            <button onClick={() => setMobileMenuOpen(true)} aria-label="Open menu" className="ui-icon-btn text-fg-muted"><Menu size={22}/></button>
+            <h2 className="font-semibold text-base text-fg truncate px-2">{menuItems.find(m => m.id === activeTab)?.label ?? activeTab}</h2>
             <div className="w-10 shrink-0"/>
          </div>
 
