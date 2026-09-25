@@ -4,19 +4,11 @@ import { AlertTriangle, History } from 'lucide-react';
 import { db, appId } from '../config/firebase';
 import { formatCurrency } from '../utils/helpers';
 
-const surface  = '#1C2530';
-const elevated = '#222E3C';
-const border   = '#2E3A47';
-const subtle   = '#243040';
-const primary  = '#F0F4F8';
-const muted    = '#8D9BAA';
-const faint    = '#5E7080';
-
-function StatCard({ label, value, color }) {
+function StatCard({ label, value, cls }) {
   return (
-    <div className="px-4 py-3 sm:p-4 flex sm:block items-center justify-between gap-3 sm:text-center min-w-0 rounded-card" style={{ background: surface, border: `0.5px solid ${border}` }}>
-      <p className="uppercase font-semibold sm:mb-1" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>{label}</p>
-      <p className="text-base sm:text-lg lg:text-xl font-bold tabular-nums break-words" style={{ color }}>{value}</p>
+    <div className="ui-card px-4 py-3 sm:p-4 flex sm:block items-center justify-between gap-3 sm:text-center min-w-0">
+      <p className="text-xs uppercase font-semibold tracking-[0.04em] text-fg-subtle sm:mb-1">{label}</p>
+      <p className={`text-base sm:text-lg lg:text-xl font-bold tabular-nums break-words ${cls}`}>{value}</p>
     </div>
   );
 }
@@ -49,64 +41,60 @@ export default function PartnerShare({ sales, stats, user, showToast }) {
 
       {/* Stats row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
-        <StatCard label="Total"   value={formatCurrency(stats.mamaTotal)}   color="#60A5FA" />
-        <StatCard label="Pending" value={formatCurrency(stats.mamaPending)} color="#FC6B6B" />
-        <StatCard label="Paid"    value={formatCurrency(stats.mamaPaid)}    color="#4ADE80" />
+        <StatCard label="Total"   value={formatCurrency(stats.mamaTotal)}   cls="text-info" />
+        <StatCard label="Pending" value={formatCurrency(stats.mamaPending)} cls="text-warning" />
+        <StatCard label="Paid"    value={formatCurrency(stats.mamaPaid)}    cls="text-success" />
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2">
+      <div className="flex gap-2" role="tablist">
         {[
-          { id: 'pending', label: 'Pending', icon: AlertTriangle, activeColor: '#FC6B6B', activeBg: 'rgba(252,107,107,0.12)', activeBorder: 'rgba(252,107,107,0.3)' },
-          { id: 'paid',    label: 'History', icon: History,       activeColor: '#4ADE80',  activeBg: 'rgba(74,222,128,0.1)',   activeBorder: 'rgba(74,222,128,0.3)' },
+          { id: 'pending', label: 'Pending', icon: AlertTriangle, activeCls: 'bg-warning/10 text-warning border-warning/30' },
+          { id: 'paid',    label: 'History', icon: History,       activeCls: 'bg-success/10 text-success border-success/30' },
         ].map(tab => {
           const active = mamaTab === tab.id;
           return (
             <button key={tab.id} onClick={() => setMamaTab(tab.id)}
-              className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-all"
-              style={active
-                ? { background: tab.activeBg, color: tab.activeColor, border: `0.5px solid ${tab.activeBorder}` }
-                : { background: surface, color: muted, border: `0.5px solid ${border}` }}
+              role="tab" aria-selected={active}
+              className={`ui-tab ${active ? tab.activeCls : 'ui-tab-inactive'}`}
             >
-              <tab.icon size={15}/> {tab.label}
+              <tab.icon size={16}/> {tab.label}
             </button>
           );
         })}
       </div>
 
       {/* Table card */}
-      <div className="rounded-card overflow-hidden" style={{ background: surface, border: `0.5px solid ${border}` }}>
-        <div className="flex justify-between items-center px-5 py-3.5" style={{ borderBottom: `0.5px solid ${border}` }}>
-          <h3 className="font-semibold flex items-center gap-2" style={{ color: primary, fontSize: 14 }}>
-            {mamaTab === 'pending' ? <AlertTriangle size={15} style={{ color: '#FC6B6B' }}/> : <History size={15} style={{ color: '#4ADE80' }}/>}
-            {mamaTab === 'pending' ? 'Pending Payments' : 'Payment History'}
+      <div className="ui-card overflow-hidden">
+        <div className="flex justify-between items-center gap-3 px-4 sm:px-5 py-3 min-h-[3.5rem] border-b border-line">
+          <h3 className="ui-section-title text-sm sm:text-base flex items-center gap-2 min-w-0">
+            {mamaTab === 'pending' ? <AlertTriangle size={16} className="shrink-0 text-warning"/> : <History size={16} className="shrink-0 text-success"/>}
+            <span className="truncate">{mamaTab === 'pending' ? 'Pending Payments' : 'Payment History'}</span>
           </h3>
           {mamaTab === 'pending' && selectedMamaSales.length > 0 && (
             <button onClick={() => handleMarkPaid(true)}
-              className="px-4 py-2 rounded-lg text-xs font-bold transition-all active:scale-95"
-              style={{ background: 'rgba(252,107,107,0.12)', color: '#FC6B6B', border: '0.5px solid rgba(252,107,107,0.3)' }}
+              className="ui-btn-tint shrink-0 bg-success/10 text-success border-success/30 hover:bg-success/20"
             >Mark Paid ({selectedMamaSales.length})</button>
           )}
         </div>
 
         {/* Mobile cards */}
-        <div className="md:hidden">
+        <div className="md:hidden divide-y divide-line-subtle">
           {activeList.length === 0 ? (
-            <p className="text-center py-10 text-sm" style={{ color: faint }}>
+            <p className="ui-empty py-10">
               {mamaTab === 'pending' ? 'No pending payments' : 'No history'}
             </p>
-          ) : activeList.map((s, idx) => (
+          ) : activeList.map((s) => (
             <div key={s.id}
               onClick={() => mamaTab === 'pending' && toggle(s.id)}
-              className="flex items-center gap-3 px-4 py-3 transition-colors duration-150 cursor-pointer"
-              style={{ borderBottom: idx < activeList.length - 1 ? `0.5px solid ${subtle}` : 'none', background: selectedMamaSales.includes(s.id) ? 'rgba(252,107,107,0.06)' : 'transparent' }}
+              className={`flex items-center gap-3 px-4 py-3 min-h-[3.5rem] transition-colors duration-150 ${mamaTab === 'pending' ? 'cursor-pointer' : ''} ${selectedMamaSales.includes(s.id) ? 'bg-accent/10' : ''}`}
             >
-              {mamaTab === 'pending' && <input type="checkbox" readOnly checked={selectedMamaSales.includes(s.id)} className="w-4 h-4 accent-red-400"/>}
+              {mamaTab === 'pending' && <input type="checkbox" readOnly tabIndex={-1} checked={selectedMamaSales.includes(s.id)} className="w-5 h-5 shrink-0 accent-accent pointer-events-none"/>}
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm truncate" style={{ color: primary }}>{s.suitId}</p>
-                <p className="text-xs truncate" style={{ color: faint }}>{s.brand}</p>
+                <p className="font-semibold font-mono text-sm truncate text-fg">{s.suitId}</p>
+                <p className="text-xs truncate text-fg-subtle">{s.brand}</p>
               </div>
-              <span className="font-bold text-sm" style={{ color: mamaTab === 'pending' ? '#FC6B6B' : '#4ADE80' }}>{s.mamaShare}</span>
+              <span className={`font-semibold text-sm tabular-nums shrink-0 ${mamaTab === 'pending' ? 'text-warning' : 'text-success'}`}>{formatCurrency(s.mamaShare)}</span>
             </div>
           ))}
         </div>
@@ -114,45 +102,42 @@ export default function PartnerShare({ sales, stats, user, showToast }) {
         {/* Desktop table */}
         <div className="hidden md:block overflow-auto">
           <table className="w-full text-sm table-fixed">
-            <thead style={{ background: '#131920' }}>
-              <tr className="uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>
+            <thead className="ui-table-head">
+              <tr>
                 {mamaTab === 'pending' && (
-                  <th className="p-4 w-14 text-center">
-                    <input type="checkbox" checked={allSelected} onChange={() => setSelectedMamaSales(allSelected ? [] : pendingAll.map(s => s.id))} className="w-4 h-4 accent-amber-400 cursor-pointer"/>
+                  <th className="px-4 py-3 w-14 text-center">
+                    <input type="checkbox" aria-label="Select all pending" checked={allSelected} onChange={() => setSelectedMamaSales(allSelected ? [] : pendingAll.map(s => s.id))} className="w-4 h-4 accent-accent cursor-pointer align-middle"/>
                   </th>
                 )}
-                <th className="p-4 text-left">Item Details</th>
-                {mamaTab === 'paid' && <th className="text-center">Paid Date</th>}
-                <th className="text-right p-4 w-32">Share Amount</th>
+                <th className="px-4 py-3 text-left">Item Details</th>
+                {mamaTab === 'paid' && <th className="px-2 py-3 text-center">Paid Date</th>}
+                <th className="px-4 py-3 text-right w-36">Share Amount</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-line-subtle">
               {activeList.length === 0 ? (
-                <tr><td colSpan="3" className="text-center p-12 text-sm" style={{ color: faint }}>
+                <tr><td colSpan="3" className="ui-empty p-12">
                   {mamaTab === 'pending' ? 'No pending payments' : 'No history'}
                 </td></tr>
-              ) : activeList.map((s, idx) => (
+              ) : activeList.map((s) => (
                 <tr key={s.id}
-                  className="cursor-pointer transition-colors duration-150"
-                  style={{ borderBottom: idx < activeList.length - 1 ? `0.5px solid ${subtle}` : 'none', background: selectedMamaSales.includes(s.id) ? 'rgba(252,107,107,0.06)' : 'transparent' }}
+                  className={`transition-colors duration-150 ${mamaTab === 'pending' ? 'cursor-pointer' : ''} ${selectedMamaSales.includes(s.id) ? 'bg-accent/10' : 'hover:bg-elevated'}`}
                   onClick={() => mamaTab === 'pending' && toggle(s.id)}
-                  onMouseEnter={e => { if (!selectedMamaSales.includes(s.id)) e.currentTarget.style.background = elevated; }}
-                  onMouseLeave={e => { if (!selectedMamaSales.includes(s.id)) e.currentTarget.style.background = 'transparent'; }}
                 >
                   {mamaTab === 'pending' && (
-                    <td className="p-4 text-center">
-                      <input type="checkbox" readOnly checked={selectedMamaSales.includes(s.id)} className="w-4 h-4 accent-red-400 pointer-events-none"/>
+                    <td className="px-4 py-3.5 text-center">
+                      <input type="checkbox" readOnly tabIndex={-1} checked={selectedMamaSales.includes(s.id)} className="w-4 h-4 accent-accent pointer-events-none align-middle"/>
                     </td>
                   )}
-                  <td className="p-4 font-medium" style={{ color: muted }}>
-                    {s.suitId} <span className="text-xs font-normal ml-1" style={{ color: faint }}>({s.brand})</span>
+                  <td className="px-4 py-3.5 font-medium text-fg truncate">
+                    <span className="font-mono">{s.suitId}</span> <span className="text-xs font-normal ml-1 text-fg-subtle">({s.brand})</span>
                   </td>
                   {mamaTab === 'paid' && (
-                    <td className="text-center text-xs" style={{ color: faint }}>
+                    <td className="px-2 py-3.5 text-center text-xs text-fg-subtle">
                       {s.mamaPaidAt ? new Date(s.mamaPaidAt.seconds * 1000).toLocaleDateString() : '—'}
                     </td>
                   )}
-                  <td className="text-right p-4 font-bold" style={{ color: mamaTab === 'pending' ? '#FC6B6B' : '#4ADE80' }}>{s.mamaShare}</td>
+                  <td className={`px-4 py-3.5 text-right font-semibold tabular-nums ${mamaTab === 'pending' ? 'text-warning' : 'text-success'}`}>{formatCurrency(s.mamaShare)}</td>
                 </tr>
               ))}
             </tbody>
