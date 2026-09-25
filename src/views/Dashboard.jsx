@@ -29,29 +29,26 @@ export default function Dashboard({ stats, sales }) {
       </div>
 
       {/* Recent Sales */}
-      <div className="rounded-card" style={{ background: '#1C2530', border: '0.5px solid #2E3A47' }}>
-        <div className="px-5 py-4" style={{ borderBottom: '0.5px solid #2E3A47' }}>
-          <h3 className="font-semibold text-base" style={{ color: '#F0F4F8' }}>Recent Sales</h3>
+      <div className="ui-card overflow-hidden">
+        <div className="px-4 sm:px-5 py-4 border-b border-line">
+          <h3 className="ui-section-title">Recent Sales</h3>
         </div>
-        <div>
+        <div className="divide-y divide-line-subtle">
           {sales.length === 0 ? (
-            <p className="text-center py-10 text-sm" style={{ color: '#5E7080' }}>No sales yet</p>
+            <p className="ui-empty py-10">No sales yet</p>
           ) : (
-            sales.slice(0, 5).map((s, idx) => (
+            sales.slice(0, 5).map((s) => (
               <div
                 key={s.id}
-                className="flex justify-between items-center gap-3 px-4 sm:px-5 py-3.5 transition-colors duration-150"
-                style={{ borderBottom: idx < 4 ? '0.5px solid #243040' : 'none' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#222E3C'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                className="ui-row flex justify-between items-center gap-3 px-4 sm:px-5 py-3.5"
               >
                 <div className="min-w-0">
-                  <p className="font-medium text-sm truncate" style={{ color: '#F0F4F8' }}>{s.customerName}</p>
-                  <p className="font-mono text-xs mt-0.5" style={{ color: '#5E7080' }}>{s.suitId}</p>
+                  <p className="font-medium text-sm truncate text-fg">{s.customerName}</p>
+                  <p className="font-mono text-xs mt-0.5 text-fg-subtle">{s.suitId}</p>
                 </div>
                 <div className="text-right shrink-0 tabular-nums">
-                  <p className="font-bold text-sm" style={{ color: '#4ADE80' }}>+{formatCurrency(s.salePrice)}</p>
-                  <p className="text-xs mt-0.5" style={{ color: '#8D9BAA' }}>Profit: {formatCurrency(s.profit - s.mamaShare)}</p>
+                  <p className="font-semibold text-sm text-success">+{formatCurrency(s.salePrice)}</p>
+                  <p className="text-xs mt-0.5 text-fg-subtle">Profit: {formatCurrency(s.profit - s.mamaShare)}</p>
                 </div>
               </div>
             ))
