@@ -5,27 +5,11 @@ import { db, appId } from '../config/firebase';
 import { formatCurrency, handleNumberInput, chunkArray } from '../utils/helpers';
 import { ConfirmationModal } from '../components/ui/UIComponents';
 
-const surface  = '#1C2530';
-const elevated = '#222E3C';
-const border   = '#2E3A47';
-const subtle   = '#243040';
-const primary  = '#F0F4F8';
-const muted    = '#8D9BAA';
-const faint    = '#5E7080';
-
-const inputCls = {
-  background: surface,
-  border: `1px solid ${border}`,
-  borderRadius: 8,
-  color: primary,
-  outline: 'none',
-  width: '100%',
-  padding: '9px 12px',
-  fontSize: 16,
-  transition: 'border-color 150ms ease, box-shadow 150ms ease',
-};
-const focusIn  = e => { e.target.style.borderColor = '#F5A623'; e.target.style.boxShadow = '0 0 0 3px rgba(245,166,35,0.15)'; };
-const focusOut = e => { e.target.style.borderColor = border;    e.target.style.boxShadow = 'none'; };
+function StockBadge({ inStock }) {
+  return inStock
+    ? <span className="ui-badge bg-success/10 text-success border-success/25">In Stock</span>
+    : <span className="ui-badge bg-danger/10 text-danger border-danger/25">Sold</span>;
+}
 
 export default function Inventory({ inventory, user, showToast }) {
   const [inventorySearch, setInventorySearch] = useState('');
@@ -76,23 +60,24 @@ export default function Inventory({ inventory, user, showToast }) {
         isDanger
       />
 
-      <div className="flex-1 flex flex-col min-h-0 md:overflow-hidden rounded-card" style={{ border: `0.5px solid ${border}`, background: surface }}>
+      <div className="ui-card flex-1 flex flex-col min-h-0 md:overflow-hidden">
 
         {/* Search header */}
-        <div className="sticky md:static z-10 flex items-center gap-3 px-4 py-3 shrink-0 rounded-t-card" style={{ borderBottom: `0.5px solid ${border}`, background: surface, top: 'var(--mobile-header-h)' }}>
-          <Search size={17} style={{ color: faint }} />
-          <input
-            ref={searchRef}
-            className="bg-transparent outline-none flex-1 font-medium"
-            style={{ color: primary, fontSize: 16 }}
-            placeholder="Search by ID or brand..."
-            value={inventorySearch}
-            onChange={e => setInventorySearch(e.target.value)}
-          />
+        <div className="sticky md:static z-10 px-3 py-3 shrink-0 rounded-t-card bg-surface border-b border-line" style={{ top: 'var(--mobile-header-h)' }}>
+          <div className="ui-search">
+            <Search size={17} className="shrink-0" />
+            <input
+              ref={searchRef}
+              aria-label="Search inventory"
+              placeholder="Search by ID or brand..."
+              value={inventorySearch}
+              onChange={e => setInventorySearch(e.target.value)}
+            />
+          </div>
         </div>
 
         {/* Stats bar */}
-        <div className="flex justify-between px-5 py-2.5 shrink-0 uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint, borderBottom: `0.5px solid ${subtle}`, background: '#131920' }}>
+        <div className="ui-table-head flex justify-between gap-3 px-4 sm:px-5 py-2.5 shrink-0 border-b border-line-subtle tabular-nums">
           <span>{filteredInv.length} Items</span>
           <span>Value: {formatCurrency(filteredValue)}</span>
         </div>
@@ -101,26 +86,26 @@ export default function Inventory({ inventory, user, showToast }) {
         <div className="md:hidden">
           <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 p-2">
             {filteredInv.length === 0 ? (
-              <div className="col-span-full flex flex-col items-center justify-center p-10 opacity-40 text-sm">
+              <div className="col-span-full flex flex-col items-center justify-center p-10 ui-empty">
                 <Package size={28} className="mb-2"/>
                 <p>No items found</p>
               </div>
             ) : filteredInv.map(i => (
-              <div key={i.id} className="p-3 rounded-lg flex flex-col justify-between" style={{ background: elevated, border: `0.5px solid ${border}` }}>
-                <div className="flex justify-between items-start mb-1">
-                  <span className="font-bold font-mono text-sm" style={{ color: '#F5A623' }}>{i.suitId}</span>
-                  <span className="w-2 h-2 rounded-full" style={{ background: i.qty > 0 ? '#4ADE80' : '#FC6B6B' }}/>
+              <div key={i.id} className="p-3 rounded-lg flex flex-col justify-between bg-elevated border border-line">
+                <div className="flex justify-between items-start gap-2 mb-1">
+                  <span className="font-semibold font-mono text-sm text-accent min-w-0 break-all">{i.suitId}</span>
+                  <StockBadge inStock={i.qty > 0} />
                 </div>
-                <span className="text-xs font-medium truncate block mb-2" style={{ color: muted }}>{i.brand}</span>
-                <div className="pt-2 flex justify-between items-end" style={{ borderTop: `0.5px dashed ${subtle}` }}>
-                  <div>
-                    <span className="block font-bold text-sm" style={{ color: primary }}>{i.salePrice}</span>
-                    <span className="text-[10px]" style={{ color: faint }}>Cost: {i.orgPrice}</span>
+                <span className="text-xs font-medium truncate block mb-2 text-fg-muted">{i.brand}</span>
+                <div className="pt-2 flex justify-between items-end gap-2 border-t border-dashed border-line">
+                  <div className="min-w-0 tabular-nums">
+                    <span className="block font-semibold text-sm text-fg">{formatCurrency(i.salePrice)}</span>
+                    <span className="text-xs text-fg-subtle">Cost: {formatCurrency(i.orgPrice)}</span>
                   </div>
                   {i.qty > 0 && (
                     <div className="flex gap-1.5 shrink-0">
-                      <button onClick={() => setEditingItem(i)} aria-label="Edit item" className="w-9 h-9 flex items-center justify-center rounded-lg transition-colors" style={{ color: '#60A5FA', background: 'rgba(96,165,250,0.1)' }}><Edit size={15}/></button>
-                      <button onClick={() => setModalConfig({ isOpen: true, id: i.id })} aria-label="Delete item" className="w-9 h-9 flex items-center justify-center rounded-lg transition-colors" style={{ color: '#FC6B6B', background: 'rgba(252,107,107,0.1)' }}><Trash2 size={15}/></button>
+                      <button onClick={() => setEditingItem(i)} aria-label="Edit item" className="w-9 h-9 flex items-center justify-center rounded-lg bg-info/10 text-info transition-colors hover:bg-info/20"><Edit size={15}/></button>
+                      <button onClick={() => setModalConfig({ isOpen: true, id: i.id })} aria-label="Delete item" className="w-9 h-9 flex items-center justify-center rounded-lg bg-danger/10 text-danger transition-colors hover:bg-danger/20"><Trash2 size={15}/></button>
                     </div>
                   )}
                 </div>
@@ -133,44 +118,33 @@ export default function Inventory({ inventory, user, showToast }) {
         <div className="hidden md:flex flex-col flex-1 min-h-0 overflow-hidden">
           <div className="flex-1 overflow-y-auto">
             <table className="w-full text-sm table-fixed">
-              <thead className="sticky top-0 z-10" style={{ background: '#131920' }}>
-                <tr className="uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>
-                  <th className="p-4 text-left w-1/6">ID</th>
-                  <th className="text-left w-1/4">Brand</th>
-                  <th className="text-right w-1/6">Cost</th>
-                  <th className="text-right w-1/6">Sale</th>
-                  <th className="text-center w-1/6">Status</th>
-                  <th className="text-center w-1/6">Actions</th>
+              <thead className="ui-table-head sticky top-0 z-10">
+                <tr>
+                  <th className="px-4 py-3 text-left w-1/6">ID</th>
+                  <th className="px-2 py-3 text-left w-1/4">Brand</th>
+                  <th className="px-2 py-3 text-right w-1/6">Cost</th>
+                  <th className="px-2 py-3 text-right w-1/6">Sale</th>
+                  <th className="px-2 py-3 text-center w-1/6">Status</th>
+                  <th className="px-2 py-3 text-center w-1/6">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-line-subtle">
                 {filteredInv.length === 0 ? (
-                  <tr><td colSpan="6" className="text-center p-12 text-sm" style={{ color: faint }}>No items found</td></tr>
+                  <tr><td colSpan="6" className="ui-empty p-12">No items found</td></tr>
                 ) : filteredInv.map(i => (
-                  <tr key={i.id} className="transition-colors duration-150" style={{ borderBottom: `0.5px solid ${subtle}` }}
-                    onMouseEnter={e => e.currentTarget.style.background = elevated}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                  >
-                    <td className="p-4 font-bold font-mono" style={{ color: '#F5A623' }}>{i.suitId}</td>
-                    <td className="font-medium truncate" style={{ color: muted }}>{i.brand}</td>
-                    <td className="text-right font-medium" style={{ color: faint }}>{i.orgPrice}</td>
-                    <td className="text-right font-bold" style={{ color: primary }}>{i.salePrice}</td>
-                    <td className="text-center">
-                      {i.qty > 0
-                        ? <span className="text-[10px] px-2.5 py-1 rounded-full font-semibold" style={{ background: 'rgba(74,222,128,0.1)', color: '#4ADE80', border: '0.5px solid rgba(74,222,128,0.25)' }}>In Stock</span>
-                        : <span className="text-[10px] px-2.5 py-1 rounded-full font-semibold" style={{ background: 'rgba(252,107,107,0.1)', color: '#FC6B6B', border: '0.5px solid rgba(252,107,107,0.25)' }}>Sold</span>}
+                  <tr key={i.id} className="ui-row">
+                    <td className="px-4 py-2 font-semibold font-mono text-accent truncate">{i.suitId}</td>
+                    <td className="px-2 py-2 font-medium truncate text-fg-muted">{i.brand}</td>
+                    <td className="px-2 py-2 text-right tabular-nums text-fg-subtle">{formatCurrency(i.orgPrice)}</td>
+                    <td className="px-2 py-2 text-right tabular-nums font-semibold text-fg">{formatCurrency(i.salePrice)}</td>
+                    <td className="px-2 py-2 text-center">
+                      <StockBadge inStock={i.qty > 0} />
                     </td>
-                    <td className="text-center">
+                    <td className="px-2 py-1 text-center">
                       {i.qty > 0 && (
-                        <div className="flex justify-center gap-2 py-3">
-                          <button onClick={() => setEditingItem(i)} className="p-1.5 rounded transition-colors" style={{ color: '#60A5FA' }}
-                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(96,165,250,0.1)'}
-                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                          ><Edit size={14}/></button>
-                          <button onClick={() => setModalConfig({ isOpen: true, id: i.id })} className="p-1.5 rounded transition-colors" style={{ color: '#FC6B6B' }}
-                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(252,107,107,0.1)'}
-                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                          ><Trash2 size={14}/></button>
+                        <div className="flex justify-center gap-1">
+                          <button onClick={() => setEditingItem(i)} aria-label="Edit item" className="ui-icon-btn text-info hover:text-info hover:bg-info/10"><Edit size={16}/></button>
+                          <button onClick={() => setModalConfig({ isOpen: true, id: i.id })} aria-label="Delete item" className="ui-icon-btn text-danger hover:text-danger hover:bg-danger/10"><Trash2 size={16}/></button>
                         </div>
                       )}
                     </td>
@@ -184,33 +158,27 @@ export default function Inventory({ inventory, user, showToast }) {
 
       {/* Edit modal */}
       {editingItem && (
-        <div className="fixed inset-0 z-[250] flex justify-center overlay-safe overflow-y-auto overscroll-contain animate-fade-in" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
-          <div className="my-auto w-full max-w-sm p-6 rounded-modal" style={{ background: '#222E3C', border: `0.5px solid ${border}` }}>
-            <h3 className="font-bold text-lg mb-5 text-center" style={{ color: primary }}>Edit Item</h3>
-            <form onSubmit={handleUpdateItem} className="space-y-3">
+        <div className="ui-overlay overlay-safe animate-fade-in">
+          <div className="ui-modal max-w-sm p-6" role="dialog" aria-modal="true" aria-labelledby="edit-item-title">
+            <h3 id="edit-item-title" className="text-lg font-semibold mb-5 text-center text-fg">Edit Item</h3>
+            <form onSubmit={handleUpdateItem} className="space-y-4">
               <div>
-                <label className="block mb-1.5 uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>Brand</label>
-                <input style={inputCls} value={editingItem.brand} onChange={e => setEditingItem({ ...editingItem, brand: e.target.value })} onFocus={focusIn} onBlur={focusOut}/>
+                <label htmlFor="edit-brand" className="ui-label">Brand</label>
+                <input id="edit-brand" className="ui-input" value={editingItem.brand} onChange={e => setEditingItem({ ...editingItem, brand: e.target.value })}/>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block mb-1.5 uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>Cost</label>
-                  <input style={inputCls} type="number" inputMode="numeric" onKeyDown={handleNumberInput} value={editingItem.orgPrice} onChange={e => setEditingItem({ ...editingItem, orgPrice: e.target.value })} onFocus={focusIn} onBlur={focusOut}/>
+                  <label htmlFor="edit-cost" className="ui-label">Cost</label>
+                  <input id="edit-cost" className="ui-input tabular-nums" type="number" inputMode="numeric" onKeyDown={handleNumberInput} value={editingItem.orgPrice} onChange={e => setEditingItem({ ...editingItem, orgPrice: e.target.value })}/>
                 </div>
                 <div>
-                  <label className="block mb-1.5 uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>Sale</label>
-                  <input style={inputCls} type="number" inputMode="numeric" onKeyDown={handleNumberInput} value={editingItem.salePrice} onChange={e => setEditingItem({ ...editingItem, salePrice: e.target.value })} onFocus={focusIn} onBlur={focusOut}/>
+                  <label htmlFor="edit-sale" className="ui-label">Sale</label>
+                  <input id="edit-sale" className="ui-input tabular-nums" type="number" inputMode="numeric" onKeyDown={handleNumberInput} value={editingItem.salePrice} onChange={e => setEditingItem({ ...editingItem, salePrice: e.target.value })}/>
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setEditingItem(null)} className="flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all" style={{ background: surface, color: primary, border: `1px solid ${border}` }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = '#4A5E72'}
-                  onMouseLeave={e => e.currentTarget.style.borderColor = border}
-                >Cancel</button>
-                <button type="submit" className="flex-1 py-2.5 rounded-lg font-bold text-sm transition-all active:scale-95" style={{ background: '#F5A623', color: '#0F1520' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#E09410'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#F5A623'}
-                >Save Changes</button>
+                <button type="button" onClick={() => setEditingItem(null)} className="ui-btn-secondary flex-1">Cancel</button>
+                <button type="submit" className="ui-btn-primary flex-1">Save Changes</button>
               </div>
             </form>
           </div>
