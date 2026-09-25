@@ -52,7 +52,7 @@ export default function Sidebar({ activeTab, setActiveTab, userProfileName, mobi
 
       <div
         className={`fixed inset-y-0 left-0 w-60 flex flex-col z-40 transition-transform duration-300 md:relative md:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        style={{ background: '#0F1520', borderRight: '0.5px solid #2E3A47' }}
+        style={{ background: '#0F1520', borderRight: '0.5px solid #2E3A47', paddingTop: 'var(--safe-top)', paddingBottom: 'var(--safe-bottom)', paddingLeft: 'var(--safe-left)' }}
       >
         {/* Brand */}
         <div

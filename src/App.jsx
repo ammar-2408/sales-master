@@ -185,8 +185,8 @@ export default function App() {
         setViewingCustomer={setViewingCustomer}
       />
       
-      <div className="flex-1 flex flex-col h-full overflow-hidden relative">
-         <div className="md:hidden flex shrink-0 justify-between items-center px-4 py-3" style={{ borderBottom: '0.5px solid #2E3A47' }}>
+      <div className="flex-1 flex flex-col h-full overflow-hidden relative" style={{ paddingLeft: 'var(--safe-left)', paddingRight: 'var(--safe-right)' }}>
+         <div className="md:hidden flex shrink-0 justify-between items-center px-4 py-3" style={{ borderBottom: '0.5px solid #2E3A47', paddingTop: 'calc(0.75rem + var(--safe-top))' }}>
             <button onClick={() => setMobileMenuOpen(true)} className="p-2 rounded-lg active:scale-95 transition-transform" style={{ background: 'rgba(245,166,35,0.12)', color: '#F5A623' }}><Menu size={20}/></button>
             <h2 className="font-semibold uppercase tracking-wider text-xs" style={{ color: '#8D9BAA' }}>{activeTab === 'mama' ? 'PARTNER SHARE' : activeTab}</h2>
             <div className="w-8"/>
