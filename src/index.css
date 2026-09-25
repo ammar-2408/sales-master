@@ -1,56 +1,129 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── Design Tokens ─────────────────────────────────── */
 :root {
-  --bg-root:       #131920;
-  --bg-surface:    #1C2530;
-  --bg-elevated:   #222E3C;
-  --bg-sidebar:    #0F1520;
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
 
-  --border:        #2E3A47;
-  --border-subtle: #243040;
-  --border-focus:  #4A5E72;
+  --mobile-header-h: calc(3.5rem + var(--safe-top));
 
-  --text-primary:  #F0F4F8;
-  --text-secondary:#8D9BAA;
-  --text-muted:    #5E7080;
-  --text-link:     #F5A623;
-
-  --amber:         #F5A623;
-  --amber-hover:   #E09410;
-  --amber-soft:    rgba(245,166,35,0.12);
-  --amber-border:  rgba(245,166,35,0.3);
-
-  --green:         #4ADE80;
-  --red:           #FC6B6B;
-  --blue:          #60A5FA;
-  --muted:         #5E7080;
+  color-scheme: dark;
 }
 
-/* ── Base Reset ─────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
+/* ── Base ───────────────────────────────────────────── */
+@layer base {
+  html {
+    height: 100%;
+    font-size: 100%; /* respects the user's browser font-size setting */
+  }
 
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  background-color: var(--bg-root);
-  color: var(--text-primary);
-  -webkit-font-smoothing: antialiased;
+  html, body, #root {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    @apply bg-canvas text-fg font-sans antialiased;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* ── Components ─────────────────────────────────────── */
+@layer components {
+  .ui-card { @apply bg-surface border border-line rounded-card; }
+  .ui-card-interactive { @apply ui-card cursor-pointer transition-colors duration-150 hover:border-line-strong active:border-line-strong; }
+
+  .ui-title         { @apply text-xl font-semibold tracking-tight text-fg; }
+  .ui-section-title { @apply text-base font-semibold text-fg; }
+  .ui-label         { @apply block mb-1.5 text-xs font-semibold uppercase tracking-[0.04em] text-fg-subtle; }
+  .ui-empty         { @apply text-center text-sm text-fg-subtle; }
+
+  /* 16px text keeps iOS Safari from auto-zooming on focus. */
+  .ui-input {
+    @apply w-full rounded-lg bg-canvas border border-line-input text-fg text-base px-3.5 py-2.5 outline-none
+           placeholder:text-fg-subtle transition-[border-color,box-shadow] duration-150
+           focus:border-accent focus:ring-[3px] focus:ring-accent/25;
+  }
+  .ui-search {
+    @apply flex items-center gap-2.5 px-3.5 rounded-lg bg-canvas border border-line-input text-fg-subtle
+           transition-[border-color,box-shadow] duration-150
+           focus-within:border-accent focus-within:ring-[3px] focus-within:ring-accent/25;
+  }
+  .ui-search > input {
+    @apply flex-1 min-w-0 bg-transparent outline-none py-2.5 text-base font-medium text-fg placeholder:text-fg-subtle;
+  }
+
+  .ui-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 min-h-[2.5rem] text-sm font-semibold
+           transition-colors duration-150 select-none active:scale-[0.98]
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas;
+  }
+  .ui-btn-primary   { @apply ui-btn bg-primary text-white hover:bg-primary-hover disabled:hover:bg-primary; }
+  .ui-btn-secondary { @apply ui-btn bg-transparent text-fg border border-line-strong hover:bg-white/5; }
+  .ui-btn-danger    { @apply ui-btn bg-transparent text-danger border border-danger/40 hover:bg-danger/10; }
+  /* Compact tinted button; colour it with e.g. bg-accent/10 text-accent border-accent/25 */
+  .ui-btn-tint      { @apply ui-btn min-h-[2.25rem] px-3 text-xs border; }
+
+  .ui-icon-btn {
+    @apply inline-flex items-center justify-center shrink-0 w-10 h-10 rounded-lg text-fg-subtle transition-colors duration-150
+           hover:text-fg hover:bg-white/5
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent;
+  }
+
+  .ui-badge { @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold border whitespace-nowrap; }
+
+  .ui-overlay {
+    @apply fixed inset-0 z-[250] flex justify-center overflow-y-auto overscroll-contain bg-black/60 backdrop-blur-sm;
+  }
+  .ui-modal { @apply my-auto w-full rounded-modal bg-elevated border border-line shadow-2xl shadow-black/40; }
+
+  .ui-dropdown      { @apply absolute left-0 w-full mt-1 rounded-lg overflow-hidden bg-elevated border border-line-strong shadow-xl shadow-black/40; }
+  .ui-dropdown-item { @apply px-4 py-3 text-sm text-fg cursor-pointer transition-colors duration-150 hover:bg-white/5 active:bg-white/5; }
+
+  .ui-row { @apply transition-colors duration-150 hover:bg-elevated; }
+
+  .ui-table-head { @apply bg-canvas text-xs font-semibold uppercase tracking-[0.04em] text-fg-subtle; }
+
+  .ui-tab {
+    @apply flex-1 flex items-center justify-center gap-2 min-h-[2.5rem] rounded-lg text-sm font-semibold border transition-colors duration-150;
+  }
+  .ui-tab-inactive { @apply bg-surface text-fg-muted border-line hover:text-fg; }
+}
+
+/* ── Utilities ──────────────────────────────────────── */
+@layer utilities {
+  .h-viewport     { height: 100vh; height: 100dvh; }
+  .min-h-viewport { min-height: 100vh; min-height: 100dvh; }
+  .max-h-modal    { max-height: 88vh; max-height: 88dvh; }
+
+  /* Modal overlay padding: at least 1rem, more where the device has insets. */
+  .overlay-safe {
+    padding: max(1rem, var(--safe-top)) max(1rem, var(--safe-right)) max(1rem, var(--safe-bottom)) max(1rem, var(--safe-left));
+  }
+
+  .toast-stack {
+    position: fixed;
+    bottom: calc(1rem + var(--safe-bottom));
+    right:  calc(1rem + var(--safe-right));
+    left:   calc(1rem + var(--safe-left));
+  }
+  @media (min-width: 640px) {
+    .toast-stack { left: auto; }
+  }
 }
 
 /* ── Scrollbars ─────────────────────────────────────── */
-::-webkit-scrollbar        { width: 6px; height: 6px; }
-::-webkit-scrollbar-track  { background: var(--bg-root); }
-::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--border-focus); }
+::-webkit-scrollbar        { width: 8px; height: 8px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: theme('colors.line.strong'); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: theme('colors.fg.disabled'); }
 
 /* ── Animations ─────────────────────────────────────── */
 @keyframes fadeIn {
@@ -62,5 +135,10 @@ html, body, #root {
   to   { opacity: 1; transform: translateX(0); }
 }
 
-.animate-fade-in  { animation: fadeIn  0.2s ease both; }
+/* No fill-mode: a persisting transform would make this element the containing block for position:fixed modals inside it. */
+.animate-fade-in  { animation: fadeIn  0.2s ease; }
 .animate-slide-in { animation: slideIn 0.2s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in, .animate-slide-in { animation: none; }
+}

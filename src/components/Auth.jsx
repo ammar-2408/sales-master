@@ -6,33 +6,20 @@ import { auth, db, appId, ADMIN_ACCESS_CODE } from '../config/firebase';
 import { ToastContainer } from './ui/UIComponents';
 import { getFriendlyErrorMessage } from '../utils/helpers';
 
-const inputStyle = {
-  background: '#1C2530',
-  border: '1px solid #2E3A47',
-  borderRadius: '8px',
-  color: '#F0F4F8',
-  outline: 'none',
-  width: '100%',
-  padding: '11px 14px',
-  fontSize: '14px',
-  transition: 'border-color 150ms ease, box-shadow 150ms ease',
-};
-
 function Input({ icon: Icon, type = 'text', placeholder, value, onChange, right }) {
   return (
     <div className="relative flex items-center">
-      {Icon && <Icon size={16} style={{ color: '#5E7080', position: 'absolute', left: 12, pointerEvents: 'none' }} />}
+      {Icon && <Icon size={17} className="absolute left-3.5 pointer-events-none text-fg-subtle" />}
       <input
         type={type}
         placeholder={placeholder}
+        aria-label={placeholder}
         value={value}
         onChange={onChange}
         autoComplete="off"
-        style={{ ...inputStyle, paddingLeft: Icon ? 38 : 14, paddingRight: right ? 40 : 14 }}
-        onFocus={e => { e.target.style.borderColor = '#F5A623'; e.target.style.boxShadow = '0 0 0 3px rgba(245,166,35,0.15)'; }}
-        onBlur={e => { e.target.style.borderColor = '#2E3A47'; e.target.style.boxShadow = 'none'; }}
+        className={`ui-input ${Icon ? 'pl-10' : ''} ${right ? 'pr-12' : ''}`}
       />
-      {right && <div style={{ position: 'absolute', right: 12 }}>{right}</div>}
+      {right && <div className="absolute right-3.5 flex">{right}</div>}
     </div>
   );
 }
@@ -79,29 +66,29 @@ export default function Auth() {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center p-4" style={{ background: '#131920' }}>
+    <div className="min-h-viewport flex flex-col items-center overlay-safe bg-canvas">
       <ToastContainer toasts={toasts} removeToast={removeToast} />
 
-      <div className="w-full max-w-md p-8 rounded-modal" style={{ background: '#1C2530', border: '0.5px solid #2E3A47' }}>
+      <div className="ui-card my-auto w-full max-w-md p-6 sm:p-8 rounded-modal">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center p-3 rounded-xl mb-4" style={{ background: 'rgba(245,166,35,0.12)', color: '#F5A623' }}>
+          <div className="inline-flex items-center justify-center p-3 rounded-xl mb-4 bg-accent/15 text-accent">
             <Shirt size={28} />
           </div>
-          <h1 className="text-3xl font-black tracking-tight" style={{ color: '#F0F4F8' }}>Sales Master</h1>
-          <p className="text-xs font-semibold uppercase tracking-widest mt-1" style={{ color: '#5E7080' }}>Retail Management System</p>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-fg">Sales Master</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] mt-1 text-fg-subtle">Retail Management System</p>
         </div>
 
         {/* Toggle tabs */}
-        <div className="flex mb-6 rounded-lg p-1" style={{ background: '#131920' }}>
+        <div className="flex mb-6 rounded-lg p-1 bg-canvas border border-line">
           {['Login', 'Sign Up'].map((label, i) => {
             const active = isLoginView === (i === 0);
             return (
               <button
                 key={label}
                 onClick={() => setIsLoginView(i === 0)}
-                className="flex-1 py-2 rounded-md text-sm font-semibold transition-all"
-                style={{ background: active ? '#1C2530' : 'transparent', color: active ? '#F0F4F8' : '#5E7080', border: active ? '0.5px solid #2E3A47' : 'none' }}
+                aria-pressed={active}
+                className={`flex-1 min-h-[2.5rem] rounded-md text-sm font-semibold transition-colors duration-150 ${active ? 'bg-elevated text-fg shadow-sm' : 'text-fg-subtle hover:text-fg'}`}
               >
                 {label}
               </button>
@@ -121,8 +108,8 @@ export default function Auth() {
             value={authPassword}
             onChange={e => setAuthPassword(e.target.value)}
             right={
-              <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ color: '#5E7080' }}>
-                {showPassword ? <EyeOff size={16}/> : <Eye size={16}/>}
+              <button type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? 'Hide password' : 'Show password'} className="p-2 -m-2 rounded-md text-fg-subtle hover:text-fg">
+                {showPassword ? <EyeOff size={17}/> : <Eye size={17}/>}
               </button>
             }
           />
@@ -133,10 +120,7 @@ export default function Auth() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 rounded-lg font-bold text-sm transition-all active:scale-95 disabled:opacity-50 mt-2"
-            style={{ background: '#F5A623', color: '#0F1520' }}
-            onMouseEnter={e => { if (!isSubmitting) e.currentTarget.style.background = '#E09410'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#F5A623'; }}
+            className="ui-btn-primary w-full min-h-[2.75rem] mt-2"
           >
             {isSubmitting ? <Loader2 className="animate-spin mx-auto" size={18}/> : (isLoginView ? 'Login' : 'Create Account')}
           </button>
@@ -144,10 +128,7 @@ export default function Auth() {
 
         <button
           onClick={() => setIsLoginView(!isLoginView)}
-          className="w-full text-center mt-5 text-xs font-semibold transition-colors"
-          style={{ color: '#F5A623' }}
-          onMouseEnter={e => e.currentTarget.style.color = '#E09410'}
-          onMouseLeave={e => e.currentTarget.style.color = '#F5A623'}
+          className="w-full text-center mt-4 py-2 text-sm font-semibold text-accent hover:underline underline-offset-4"
         >
           {isLoginView ? 'Create a new account →' : '← Back to login'}
         </button>

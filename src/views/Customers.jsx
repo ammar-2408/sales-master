@@ -5,28 +5,6 @@ import { db, appId } from '../config/firebase';
 import { formatCurrency, handleNumberInput } from '../utils/helpers';
 import { ConfirmationModal } from '../components/ui/UIComponents';
 
-const surface  = '#1C2530';
-const elevated = '#222E3C';
-const border   = '#2E3A47';
-const subtle   = '#243040';
-const primary  = '#F0F4F8';
-const muted    = '#8D9BAA';
-const faint    = '#5E7080';
-
-const inputCls = {
-  background: surface,
-  border: `1px solid ${border}`,
-  borderRadius: 8,
-  color: primary,
-  outline: 'none',
-  width: '100%',
-  padding: '10px 12px',
-  fontSize: 14,
-  transition: 'border-color 150ms ease, box-shadow 150ms ease',
-};
-const fi  = e => { e.target.style.borderColor = '#F5A623'; e.target.style.boxShadow = '0 0 0 3px rgba(245,166,35,0.15)'; };
-const fo  = e => { e.target.style.borderColor = border;    e.target.style.boxShadow = 'none'; };
-
 export default function Customers({ customers, payments, sales, user, showToast, setViewingCustomer, setCustomerModalTab }) {
   const [paymentCustomerSearch, setPaymentCustomerSearch] = useState('');
   const [showCustomerSuggestions, setShowCustomerSuggestions] = useState(false);
@@ -100,7 +78,7 @@ export default function Customers({ customers, payments, sales, user, showToast,
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden gap-4 pb-20">
+    <div className="flex flex-col gap-4 pb-20 md:h-full md:overflow-hidden">
       <ConfirmationModal
         isOpen={modalConfig.isOpen}
         onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
@@ -111,29 +89,27 @@ export default function Customers({ customers, payments, sales, user, showToast,
       />
 
       {/* Quick Payment Bar */}
-      <div className="shrink-0 p-4 rounded-card" style={{ background: surface, border: `0.5px solid ${border}` }}>
-        <h3 className="font-semibold mb-3 flex items-center gap-2" style={{ color: primary }}>
-          <Wallet size={16} style={{ color: '#F5A623' }}/> Quick Payment
+      <div className="ui-card shrink-0 p-4">
+        <h3 className="ui-section-title mb-3 flex items-center gap-2">
+          <Wallet size={17} className="text-accent"/> Quick Payment
         </h3>
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <input
-              style={inputCls}
+              className="ui-input"
+              aria-label="Search customer for payment"
+              autoComplete="off"
               placeholder="Search customer..."
               value={paymentCustomerSearch}
               onChange={e => { setPaymentCustomerSearch(e.target.value); setCustomerSearch(e.target.value); setShowCustomerSuggestions(true); setPaymentForm(p => ({ ...p, customerId: '' })); }}
               onFocus={() => setShowCustomerSuggestions(true)}
-              onBlur={e => { fo(e); setTimeout(() => setShowCustomerSuggestions(false), 200); }}
-              onFocusCapture={fi}
+              onBlur={() => { setTimeout(() => setShowCustomerSuggestions(false), 200); }}
             />
             {showCustomerSuggestions && paymentCustomerMatches.length > 0 && (
-              <div className="absolute top-full left-0 w-full mt-1 rounded-lg overflow-hidden z-50" style={{ background: elevated, border: `0.5px solid ${border}` }}>
-                {paymentCustomerMatches.map((c, idx) => (
+              <div className="ui-dropdown top-full z-50 divide-y divide-line-subtle">
+                {paymentCustomerMatches.map((c) => (
                   <div key={c.id} onMouseDown={() => selectPaymentCustomer(c)}
-                    className="px-4 py-2.5 text-sm cursor-pointer transition-colors"
-                    style={{ borderBottom: idx < paymentCustomerMatches.length - 1 ? `0.5px solid ${subtle}` : 'none', color: primary }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(245,166,35,0.08)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    className="ui-dropdown-item"
                   >{c.name}</div>
                 ))}
               </div>
@@ -142,26 +118,22 @@ export default function Customers({ customers, payments, sales, user, showToast,
           <div className="flex gap-2">
             <input
               inputMode="numeric" type="number" onKeyDown={handleNumberInput}
-              style={{ ...inputCls, width: '120px' }}
+              aria-label="Payment amount"
+              className="ui-input tabular-nums flex-1 min-w-0 sm:flex-none sm:w-[140px]"
               placeholder="Amount"
               value={paymentForm.amount}
               onChange={e => setPaymentForm({ ...paymentForm, amount: e.target.value })}
-              onFocus={fi} onBlur={fo}
             />
-            <button onClick={handleAddPayment} className="px-4 py-2.5 rounded-lg font-bold text-sm transition-all active:scale-95" style={{ background: '#F5A623', color: '#0F1520' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#E09410'}
-              onMouseLeave={e => e.currentTarget.style.background = '#F5A623'}
-            >Add</button>
+            <button onClick={handleAddPayment} className="ui-btn-primary min-h-[2.75rem] px-5">Add</button>
           </div>
         </div>
       </div>
 
       {/* Search customers */}
-      <div className="shrink-0 flex items-center gap-2 px-3 py-2.5 rounded-lg" style={{ background: surface, border: `0.5px solid ${border}` }}>
-        <Search size={16} style={{ color: faint }}/>
+      <div className="ui-search shrink-0 sticky md:static z-10 bg-surface" style={{ top: 'calc(var(--mobile-header-h) + 0.5rem)' }}>
+        <Search size={17} className="shrink-0"/>
         <input
-          className="bg-transparent outline-none flex-1 font-medium"
-          style={{ color: primary, fontSize: 14 }}
+          aria-label="Filter customers"
           placeholder="Filter customers..."
           value={customerSearch}
           onChange={e => setCustomerSearch(e.target.value)}
@@ -169,43 +141,37 @@ export default function Customers({ customers, payments, sales, user, showToast,
       </div>
 
       {/* Customer grid */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+      <div className="flex-1 md:overflow-y-auto">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
           {filteredCust.map(c => {
             const bal = (c.totalBill || 0) - (c.totalPaid || 0);
             const cleared = bal <= 0;
             return (
               <div
                 key={c.id}
-                className="relative p-3 sm:p-4 rounded-card h-fit cursor-pointer transition-all duration-150"
-                style={{ background: surface, border: `0.5px solid ${border}` }}
+                className={`ui-card-interactive relative p-3 sm:p-4 h-fit ${cleared ? '' : 'hover:border-danger/40'}`}
                 onClick={() => { setViewingCustomer(c); setCustomerModalTab('payments'); }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = cleared ? '#4A5E72' : 'rgba(252,107,107,0.4)'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = border; }}
               >
-                <h4 className="font-semibold text-sm truncate mb-2" style={{ color: primary }}>{c.name}</h4>
-                <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(96,165,250,0.1)', color: '#60A5FA', border: '0.5px solid rgba(96,165,250,0.25)' }}>
+                <h4 className="font-semibold text-sm truncate mb-2 text-fg">{c.name}</h4>
+                <span className="ui-badge bg-info/10 text-info border-info/25 tabular-nums">
                   Total: {formatCurrency(c.totalBill || 0)}
                 </span>
-                <div className="mt-2.5 space-y-1 text-[11px]">
-                  <div className="flex justify-between">
-                    <span style={{ color: faint }}>Remaining:</span>
-                    <b style={{ color: bal > 0 ? '#FC6B6B' : '#5E7080' }}>{formatCurrency(bal)}</b>
+                <div className="mt-3 space-y-1 text-xs">
+                  <div className="flex justify-between gap-2">
+                    <span className="text-fg-subtle">Remaining:</span>
+                    <b className={`tabular-nums text-right font-semibold ${bal > 0 ? 'text-danger' : 'text-fg-subtle'}`}>{formatCurrency(bal)}</b>
                   </div>
-                  <div className="flex justify-between">
-                    <span style={{ color: faint }}>Paid:</span>
-                    <b style={{ color: '#4ADE80' }}>{formatCurrency(c.totalPaid || 0)}</b>
+                  <div className="flex justify-between gap-2">
+                    <span className="text-fg-subtle">Paid:</span>
+                    <b className="tabular-nums text-right font-semibold text-success">{formatCurrency(c.totalPaid || 0)}</b>
                   </div>
                 </div>
                 <div className="mt-3 flex gap-1.5">
-                  <button className="flex-1 py-1.5 rounded-lg text-[10px] sm:text-xs font-semibold transition-all"
-                    style={{ background: 'rgba(245,166,35,0.1)', color: '#F5A623', border: '0.5px solid rgba(245,166,35,0.25)' }}
-                  >View Details</button>
+                  <button className="ui-btn-tint flex-1 bg-accent/10 text-accent border-accent/25 hover:bg-accent/15">View Details</button>
                   {cleared && (
                     <button
                       onClick={e => { e.stopPropagation(); setModalConfig({ isOpen: true, type: 'DELETE', id: c.id }); }}
-                      className="flex-1 py-1.5 rounded-lg text-[10px] sm:text-xs font-semibold transition-all"
-                      style={{ background: 'rgba(252,107,107,0.08)', color: '#FC6B6B', border: '0.5px solid rgba(252,107,107,0.25)' }}
+                      className="ui-btn-tint flex-1 bg-danger/10 text-danger border-danger/25 hover:bg-danger/15"
                     >Remove</button>
                   )}
                 </div>

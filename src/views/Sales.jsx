@@ -4,28 +4,6 @@ import { Search, MinusCircle } from 'lucide-react';
 import { db, appId } from '../config/firebase';
 import { formatCurrency, handleNumberInput } from '../utils/helpers';
 
-const surface = '#1C2530';
-const border  = '#2E3A47';
-const subtle  = '#243040';
-const primary = '#F0F4F8';
-const muted   = '#8D9BAA';
-const faint   = '#5E7080';
-
-const inputCls = {
-  background: surface,
-  border: `1px solid ${border}`,
-  borderRadius: 8,
-  color: primary,
-  outline: 'none',
-  width: '100%',
-  padding: '11px 14px',
-  fontSize: 14,
-  transition: 'border-color 150ms ease, box-shadow 150ms ease',
-};
-
-function focusIn(e)  { e.target.style.borderColor = '#F5A623'; e.target.style.boxShadow = '0 0 0 3px rgba(245,166,35,0.15)'; }
-function focusOut(e) { e.target.style.borderColor = border;   e.target.style.boxShadow = 'none'; }
-
 export default function Sales({ inventory, customers, user, showToast }) {
   const [cart, setCart] = useState([]);
   const [itemSearchQuery, setItemSearchQuery] = useState('');
@@ -112,37 +90,33 @@ export default function Sales({ inventory, customers, user, showToast }) {
 
   return (
     <div className="max-w-2xl mx-auto pb-20">
-      <div className="rounded-card p-6" style={{ background: surface, border: `0.5px solid ${border}` }}>
+      <div className="ui-card p-4 sm:p-6">
 
-        <h2 className="text-lg font-bold text-center mb-6 tracking-wider uppercase" style={{ color: primary }}>POS Terminal</h2>
+        <h2 className="ui-title mb-5">POS Terminal</h2>
 
         {/* Item search */}
         <div className="relative mb-6">
-          <label className="block mb-2 uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>Search Product</label>
-          <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg" style={{ background: '#131920', border: `1px solid ${border}` }}>
-            <Search size={16} style={{ color: faint }} />
+          <label htmlFor="pos-item-search" className="ui-label">Search Product</label>
+          <div className="ui-search">
+            <Search size={17} className="shrink-0" />
             <input
-              className="flex-1 bg-transparent outline-none font-medium"
-              style={{ color: primary, fontSize: 14 }}
+              id="pos-item-search"
               placeholder="Type ID or brand..."
               value={itemSearchQuery}
               onChange={e => setItemSearchQuery(e.target.value)}
             />
           </div>
           {availableItems.length > 0 && (
-            <div className="absolute w-full mt-1 rounded-lg overflow-hidden z-20" style={{ background: '#222E3C', border: `0.5px solid ${border}` }}>
-              {availableItems.map((item, idx) => (
+            <div className="ui-dropdown z-20 divide-y divide-line-subtle">
+              {availableItems.map((item) => (
                 <div
                   key={item.id}
                   onClick={() => addToCart(item)}
-                  className="flex justify-between items-center px-4 py-3 cursor-pointer transition-colors duration-150"
-                  style={{ borderBottom: idx < availableItems.length - 1 ? `0.5px solid ${subtle}` : 'none' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(245,166,35,0.08)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  className="ui-dropdown-item flex justify-between items-center gap-3"
                 >
-                  <span className="font-bold font-mono text-sm" style={{ color: '#F5A623' }}>{item.suitId}</span>
-                  <span className="text-sm" style={{ color: muted }}>{item.brand}</span>
-                  <span className="font-bold text-sm" style={{ color: '#4ADE80' }}>{formatCurrency(item.salePrice)}</span>
+                  <span className="font-semibold font-mono text-sm shrink-0 text-accent">{item.suitId}</span>
+                  <span className="text-sm min-w-0 flex-1 truncate text-center text-fg-muted">{item.brand}</span>
+                  <span className="font-semibold text-sm shrink-0 tabular-nums text-fg">{formatCurrency(item.salePrice)}</span>
                 </div>
               ))}
             </div>
@@ -150,32 +124,32 @@ export default function Sales({ inventory, customers, user, showToast }) {
         </div>
 
         {/* Cart */}
-        <div className="mb-6 rounded-lg overflow-hidden" style={{ border: `0.5px solid ${border}` }}>
-          <div className="flex justify-between px-4 py-2.5" style={{ background: '#131920', borderBottom: `0.5px solid ${border}` }}>
-            <span className="uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>Items ({cart.length})</span>
-            <span className="uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>Total</span>
+        <div className="mb-6 rounded-lg overflow-hidden border border-line">
+          <div className="ui-table-head flex justify-between px-4 py-2.5 border-b border-line">
+            <span>Items ({cart.length})</span>
+            <span>Total</span>
           </div>
           {cart.length === 0 ? (
-            <p className="text-center py-8 text-sm" style={{ color: faint }}>Cart is empty</p>
+            <p className="ui-empty py-8">Cart is empty</p>
           ) : (
-            <div>
-              {cart.map((item, idx) => (
-                <div key={item.id} className="flex justify-between items-center px-4 py-3 animate-slide-in" style={{ borderBottom: idx < cart.length - 1 ? `0.5px solid ${subtle}` : 'none' }}>
-                  <div>
-                    <p className="font-bold text-sm" style={{ color: primary }}>{item.suitId}</p>
-                    <p className="text-xs mt-0.5" style={{ color: faint }}>{item.brand}</p>
+            <div className="divide-y divide-line-subtle">
+              {cart.map((item) => (
+                <div key={item.id} className="flex justify-between items-center gap-3 px-4 py-3 animate-slide-in">
+                  <div className="min-w-0">
+                    <p className="font-semibold font-mono text-sm text-fg">{item.suitId}</p>
+                    <p className="text-xs mt-0.5 truncate text-fg-subtle">{item.brand}</p>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-bold text-sm" style={{ color: primary }}>{formatCurrency(item.salePrice)}</span>
-                    <button onClick={() => removeFromCart(item.id)} className="transition-colors" style={{ color: '#FC6B6B' }}>
-                      <MinusCircle size={17}/>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="font-semibold text-sm tabular-nums text-fg">{formatCurrency(item.salePrice)}</span>
+                    <button onClick={() => removeFromCart(item.id)} aria-label="Remove from cart" className="p-2.5 -m-2.5 rounded-full text-danger transition-colors hover:bg-danger/10">
+                      <MinusCircle size={18}/>
                     </button>
                   </div>
                 </div>
               ))}
-              <div className="flex justify-between items-center px-4 py-3" style={{ borderTop: `0.5px solid ${border}`, background: '#131920' }}>
-                <span className="font-bold text-sm" style={{ color: primary }}>Total Bill</span>
-                <span className="font-bold text-lg" style={{ color: '#4ADE80' }}>{formatCurrency(cartTotal)}</span>
+              <div className="flex justify-between items-center px-4 py-3 bg-canvas">
+                <span className="font-semibold text-sm text-fg">Total Bill</span>
+                <span className="font-bold text-lg tabular-nums text-fg">{formatCurrency(cartTotal)}</span>
               </div>
             </div>
           )}
@@ -184,23 +158,22 @@ export default function Sales({ inventory, customers, user, showToast }) {
         {/* Customer & payment */}
         <div className="space-y-4">
           <div className="relative">
-            <label className="block mb-2 uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>Customer Name</label>
+            <label htmlFor="pos-customer" className="ui-label">Customer Name</label>
             <input
-              style={inputCls}
+              id="pos-customer"
+              className="ui-input"
+              autoComplete="off"
               placeholder="Type customer name..."
               value={saleForm.customerName}
               onChange={e => { setSaleForm({ ...saleForm, customerName: e.target.value }); setShowSaleCustomerSuggestions(true); }}
-              onFocus={e => { focusIn(e); setShowSaleCustomerSuggestions(true); }}
-              onBlur={e => { focusOut(e); setTimeout(() => setShowSaleCustomerSuggestions(false), 200); }}
+              onFocus={() => { setShowSaleCustomerSuggestions(true); }}
+              onBlur={() => { setTimeout(() => setShowSaleCustomerSuggestions(false), 200); }}
             />
             {showSaleCustomerSuggestions && saleCustomerMatches.length > 0 && (
-              <div className="absolute w-full mt-1 rounded-lg overflow-hidden z-50" style={{ background: '#222E3C', border: `0.5px solid ${border}` }}>
-                {saleCustomerMatches.map((c, idx) => (
+              <div className="ui-dropdown z-50 divide-y divide-line-subtle">
+                {saleCustomerMatches.map((c) => (
                   <div key={c.id} onMouseDown={() => { setSaleForm({ ...saleForm, customerName: c.name }); setShowSaleCustomerSuggestions(false); }}
-                    className="px-4 py-2.5 text-sm cursor-pointer transition-colors"
-                    style={{ borderBottom: idx < saleCustomerMatches.length - 1 ? `0.5px solid ${subtle}` : 'none', color: primary }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(245,166,35,0.08)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    className="ui-dropdown-item"
                   >{c.name}</div>
                 ))}
               </div>
@@ -208,27 +181,24 @@ export default function Sales({ inventory, customers, user, showToast }) {
           </div>
 
           <div>
-            <label className="block mb-2 uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>Paid Amount (optional)</label>
+            <label htmlFor="pos-paid" className="ui-label">Paid Amount (optional)</label>
             <input
+              id="pos-paid"
               inputMode="numeric" type="number"
               onKeyDown={handleNumberInput}
-              style={inputCls}
+              className="ui-input tabular-nums"
               placeholder="0"
               value={saleForm.paidAmount}
               onChange={e => setSaleForm({ ...saleForm, paidAmount: e.target.value })}
-              onFocus={focusIn} onBlur={focusOut}
             />
           </div>
 
           <button
             onClick={handleProcessSale}
             disabled={isSubmitting || cart.length === 0}
-            className="w-full py-3 rounded-lg font-bold text-sm transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ background: '#F5A623', color: '#0F1520' }}
-            onMouseEnter={e => { if (!isSubmitting && cart.length > 0) e.currentTarget.style.background = '#E09410'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#F5A623'; }}
+            className="ui-btn-primary w-full min-h-[2.75rem]"
           >
-            CONFIRM SALE
+            Confirm Sale
           </button>
         </div>
       </div>

@@ -4,28 +4,9 @@ import { Plus, Save } from 'lucide-react';
 import { db, appId } from '../config/firebase';
 import { handleNumberInput, chunkArray } from '../utils/helpers';
 
-const surface = '#1C2530';
-const border  = '#2E3A47';
-const primary = '#F0F4F8';
-const faint   = '#5E7080';
-
-const inputCls = {
-  background: surface,
-  border: `1px solid ${border}`,
-  borderRadius: 8,
-  color: primary,
-  outline: 'none',
-  width: '100%',
-  padding: '11px 14px',
-  fontSize: 14,
-  transition: 'border-color 150ms ease, box-shadow 150ms ease',
-};
-const fi = e => { e.target.style.borderColor = '#F5A623'; e.target.style.boxShadow = '0 0 0 3px rgba(245,166,35,0.15)'; };
-const fo = e => { e.target.style.borderColor = border;    e.target.style.boxShadow = 'none'; };
-
-function Label({ children }) {
+function Label({ children, htmlFor }) {
   return (
-    <label className="block mb-2 uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>{children}</label>
+    <label htmlFor={htmlFor} className="ui-label">{children}</label>
   );
 }
 
@@ -76,65 +57,65 @@ export default function AddStock({ inventory, user, showToast }) {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto items-center justify-center py-8 px-4">
-      <div className="w-full max-w-xl p-6 sm:p-8 rounded-card" style={{ background: surface, border: `0.5px solid ${border}` }}>
+    <div className="flex flex-col md:h-full md:overflow-y-auto items-center pb-20 md:py-8 md:px-4">
+      <div className="ui-card my-auto w-full max-w-xl p-5 sm:p-8">
 
         {/* Header */}
         <div className="text-center mb-7">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4" style={{ background: 'rgba(245,166,35,0.12)', color: '#F5A623' }}>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4 bg-accent/15 text-accent">
             <Plus size={28}/>
           </div>
-          <h2 className="text-2xl font-bold" style={{ color: primary }}>Add New Stock</h2>
-          <p className="mt-1 text-sm" style={{ color: faint }}>Enter details below to add items to inventory.</p>
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-fg">Add New Stock</h2>
+          <p className="mt-1 text-sm text-fg-subtle">Enter details below to add items to inventory.</p>
         </div>
 
         <form onSubmit={handleAddDress} className="space-y-5">
           <div>
-            <Label>Product IDs (comma or space separated)</Label>
+            <Label htmlFor="stock-ids">Product IDs (comma or space separated)</Label>
             <textarea
+              id="stock-ids"
               ref={idsInputRef}
               required
-              style={{ ...inputCls, fontFamily: 'monospace', resize: 'none', minHeight: 90, borderRadius: 8 }}
+              className="ui-input font-mono resize-none min-h-[6rem]"
               value={dressForm.suitIds}
               onChange={e => setDressForm({ ...dressForm, suitIds: e.target.value })}
               placeholder="A1, A2, B1..."
-              onFocus={fi} onBlur={fo}
             />
           </div>
 
           <div>
-            <Label>Brand Name</Label>
+            <Label htmlFor="stock-brand">Brand Name</Label>
             <input
+              id="stock-brand"
               required
-              style={inputCls}
+              className="ui-input"
               value={dressForm.brand}
               onChange={e => setDressForm({ ...dressForm, brand: e.target.value })}
               placeholder="e.g. Khaadi, Gul Ahmed"
-              onFocus={fi} onBlur={fo}
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <Label>Cost Price</Label>
+              <Label htmlFor="stock-cost">Cost Price</Label>
               <input
+                id="stock-cost"
                 inputMode="numeric" type="number" onKeyDown={handleNumberInput}
-                style={inputCls}
+                className="ui-input tabular-nums"
                 value={dressForm.orgPrice}
                 onChange={e => setDressForm({ ...dressForm, orgPrice: e.target.value })}
                 placeholder="0"
-                onFocus={fi} onBlur={fo}
               />
             </div>
             <div>
-              <Label>Sale Price</Label>
+              <Label htmlFor="stock-sale">Sale Price</Label>
               <input
+                id="stock-sale"
                 inputMode="numeric" type="number" onKeyDown={handleNumberInput}
-                style={inputCls}
+                className="ui-input tabular-nums"
                 value={dressForm.salePrice}
                 onChange={e => setDressForm({ ...dressForm, salePrice: e.target.value })}
                 placeholder="0"
-                onFocus={fi} onBlur={fo}
               />
             </div>
           </div>
@@ -142,10 +123,7 @@ export default function AddStock({ inventory, user, showToast }) {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-40"
-            style={{ background: '#F5A623', color: '#0F1520' }}
-            onMouseEnter={e => { if (!isSubmitting) e.currentTarget.style.background = '#E09410'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#F5A623'; }}
+            className="ui-btn-primary w-full min-h-[2.75rem]"
           >
             <Save size={16}/> {isSubmitting ? 'Adding...' : 'Save Stock'}
           </button>

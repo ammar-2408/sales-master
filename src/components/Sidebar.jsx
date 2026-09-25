@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, Shirt, ShoppingCart, Users, Handshake, BarChart3, Archive, LogOut, X, PlusCircle, CheckCircle, Download } from 'lucide-react';
-
-const menuItems = [
-  { id: 'dashboard',       icon: LayoutDashboard, label: 'Dashboard' },
-  { id: 'add_stock',       icon: PlusCircle,      label: 'Add Stock' },
-  { id: 'available_stock', icon: CheckCircle,     label: 'Available Stock' },
-  { id: 'inventory',       icon: Shirt,           label: 'All Inventory' },
-  { id: 'sales',           icon: ShoppingCart,    label: 'Sales' },
-  { id: 'customers',       icon: Users,           label: 'Customers' },
-  { id: 'mama',            icon: Handshake,       label: 'Partner Share' },
-  { id: 'insights',        icon: BarChart3,       label: 'Insights' },
-  { id: 'trash',           icon: Archive,         label: 'Deleted Customers' },
-];
+import { Shirt, LogOut, X, Download } from 'lucide-react';
+import { menuItems } from '../config/navigation';
 
 export default function Sidebar({ activeTab, setActiveTab, userProfileName, mobileMenuOpen, setMobileMenuOpen, onLogout, setViewingCustomer }) {
 
@@ -44,84 +33,68 @@ export default function Sidebar({ activeTab, setActiveTab, userProfileName, mobi
       {/* Mobile overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-30 md:hidden"
-          style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+          className="fixed inset-0 z-30 md:hidden bg-black/60 backdrop-blur-sm"
+          style={{ touchAction: 'none' }}
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
       <div
-        className={`fixed inset-y-0 left-0 w-60 flex flex-col z-40 transition-transform duration-300 md:relative md:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        style={{ background: '#0F1520', borderRight: '0.5px solid #2E3A47' }}
+        className={`fixed inset-y-0 left-0 w-64 md:w-60 flex flex-col z-40 bg-sidebar border-r border-line transition-transform duration-300 md:relative md:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        style={{ paddingTop: 'var(--safe-top)', paddingBottom: 'var(--safe-bottom)', paddingLeft: 'var(--safe-left)' }}
       >
         {/* Brand */}
         <div
-          className="flex items-center gap-3 px-5 py-5 cursor-pointer shrink-0"
-          style={{ borderBottom: '0.5px solid #2E3A47' }}
+          className="flex items-center gap-3 px-4 py-4 cursor-pointer shrink-0 border-b border-line"
           onClick={() => handleNav('dashboard')}
         >
-          <div className="p-2 rounded-lg" style={{ background: 'rgba(245,166,35,0.15)', color: '#F5A623' }}>
+          <div className="p-2 rounded-lg bg-accent/15 text-accent shrink-0">
             <Shirt size={18} />
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="font-bold text-base leading-tight" style={{ color: '#F0F4F8' }}>Sales Master</h1>
-            <p className="font-mono text-[10px] uppercase tracking-wider truncate" style={{ color: '#5E7080' }}>{userProfileName || 'User'}</p>
+            <h1 className="font-semibold text-base leading-tight text-fg">Sales Master</h1>
+            <p className="text-xs truncate text-fg-subtle">{userProfileName || 'User'}</p>
           </div>
           <button
-            className="md:hidden rounded-full p-1 hover:bg-white/10 transition-colors"
-            style={{ color: '#8D9BAA' }}
+            aria-label="Close menu"
+            className="ui-icon-btn md:hidden -mr-1.5"
             onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(false); }}
           >
-            <X size={16}/>
+            <X size={18}/>
           </button>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto overscroll-contain">
           {menuItems.map(item => {
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNav(item.id)}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 text-left relative"
-                style={{
-                  color:       isActive ? '#F5A623' : '#8D9BAA',
-                  background:  isActive ? 'rgba(245,166,35,0.12)' : 'transparent',
-                  borderLeft:  isActive ? '3px solid #F5A623' : '3px solid transparent',
-                }}
-                onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = '#1C2530'; e.currentTarget.style.color = '#F0F4F8'; } }}
-                onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#8D9BAA'; } }}
+                aria-current={isActive ? 'page' : undefined}
+                className={`w-full flex items-center gap-3 px-3 min-h-[2.5rem] rounded-lg text-sm font-medium text-left border-l-[3px] transition-colors duration-150 ${isActive ? 'text-accent bg-accent/10 border-accent' : 'text-fg-muted border-transparent hover:bg-white/5 hover:text-fg'}`}
               >
-                <item.icon size={17} />
-                <span>{item.label}</span>
+                <item.icon size={17} className="shrink-0" />
+                <span className="truncate">{item.label}</span>
               </button>
             );
           })}
         </nav>
 
         {/* Bottom actions */}
-        <div className="px-3 pb-4 space-y-1.5 shrink-0" style={{ borderTop: '0.5px solid #2E3A47', paddingTop: '12px' }}>
+        <div className="px-3 py-3 space-y-2 shrink-0 border-t border-line">
           {deferredPrompt && (
-            <button
-              onClick={handleInstallClick}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold transition-all duration-150 mb-2 active:scale-95"
-              style={{ background: '#F5A623', color: '#0F1520' }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#E09410'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#F5A623'; }}
-            >
-              <Download size={15}/> Install App
+            <button onClick={handleInstallClick} className="ui-btn-primary w-full">
+              <Download size={16}/> Install App
             </button>
           )}
 
           <button
             onClick={onLogout}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold transition-all duration-150"
-            style={{ color: '#FC6B6B', background: 'transparent', border: '1px solid transparent' }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(252,107,107,0.08)'; e.currentTarget.style.borderColor = 'rgba(252,107,107,0.3)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent'; }}
+            className="ui-btn w-full text-danger border border-transparent hover:bg-danger/10 hover:border-danger/30"
           >
-            <LogOut size={14}/> Logout
+            <LogOut size={16}/> Logout
           </button>
         </div>
       </div>
