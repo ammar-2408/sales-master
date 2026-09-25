@@ -57,7 +57,7 @@ export default function Insights({ customers, setViewingCustomer, setCustomerMod
 
   return (
     <div className="flex flex-col pb-20 md:h-full md:overflow-hidden">
-      <div className="p-4 sm:p-0 flex flex-col md:h-full">
+      <div className="flex flex-col md:h-full">
 
         {/* Landing cards */}
         {!insightView && (

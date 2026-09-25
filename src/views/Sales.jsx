@@ -112,7 +112,7 @@ export default function Sales({ inventory, customers, user, showToast }) {
 
   return (
     <div className="max-w-2xl mx-auto pb-20">
-      <div className="rounded-card p-6" style={{ background: surface, border: `0.5px solid ${border}` }}>
+      <div className="rounded-card p-4 sm:p-6" style={{ background: surface, border: `0.5px solid ${border}` }}>
 
         <h2 className="text-lg font-bold text-center mb-6 tracking-wider uppercase" style={{ color: primary }}>POS Terminal</h2>
 
@@ -135,14 +135,14 @@ export default function Sales({ inventory, customers, user, showToast }) {
                 <div
                   key={item.id}
                   onClick={() => addToCart(item)}
-                  className="flex justify-between items-center px-4 py-3 cursor-pointer transition-colors duration-150"
+                  className="flex justify-between items-center gap-3 px-4 py-3 cursor-pointer transition-colors duration-150"
                   style={{ borderBottom: idx < availableItems.length - 1 ? `0.5px solid ${subtle}` : 'none' }}
                   onMouseEnter={e => e.currentTarget.style.background = 'rgba(245,166,35,0.08)'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                 >
-                  <span className="font-bold font-mono text-sm" style={{ color: '#F5A623' }}>{item.suitId}</span>
-                  <span className="text-sm" style={{ color: muted }}>{item.brand}</span>
-                  <span className="font-bold text-sm" style={{ color: '#4ADE80' }}>{formatCurrency(item.salePrice)}</span>
+                  <span className="font-bold font-mono text-sm shrink-0" style={{ color: '#F5A623' }}>{item.suitId}</span>
+                  <span className="text-sm min-w-0 flex-1 truncate text-center" style={{ color: muted }}>{item.brand}</span>
+                  <span className="font-bold text-sm shrink-0 tabular-nums" style={{ color: '#4ADE80' }}>{formatCurrency(item.salePrice)}</span>
                 </div>
               ))}
             </div>
@@ -160,13 +160,13 @@ export default function Sales({ inventory, customers, user, showToast }) {
           ) : (
             <div>
               {cart.map((item, idx) => (
-                <div key={item.id} className="flex justify-between items-center px-4 py-3 animate-slide-in" style={{ borderBottom: idx < cart.length - 1 ? `0.5px solid ${subtle}` : 'none' }}>
-                  <div>
+                <div key={item.id} className="flex justify-between items-center gap-3 px-4 py-3 animate-slide-in" style={{ borderBottom: idx < cart.length - 1 ? `0.5px solid ${subtle}` : 'none' }}>
+                  <div className="min-w-0">
                     <p className="font-bold text-sm" style={{ color: primary }}>{item.suitId}</p>
                     <p className="text-xs mt-0.5" style={{ color: faint }}>{item.brand}</p>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-bold text-sm" style={{ color: primary }}>{formatCurrency(item.salePrice)}</span>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="font-bold text-sm tabular-nums" style={{ color: primary }}>{formatCurrency(item.salePrice)}</span>
                     <button onClick={() => removeFromCart(item.id)} className="transition-colors" style={{ color: '#FC6B6B' }}>
                       <MinusCircle size={17}/>
                     </button>

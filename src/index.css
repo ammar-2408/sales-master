@@ -65,6 +65,16 @@ html, body, #root {
   .overlay-safe {
     padding: max(1rem, var(--safe-top)) max(1rem, var(--safe-right)) max(1rem, var(--safe-bottom)) max(1rem, var(--safe-left));
   }
+
+  .toast-stack {
+    position: fixed;
+    bottom: calc(1rem + var(--safe-bottom));
+    right:  calc(1rem + var(--safe-right));
+    left:   calc(1rem + var(--safe-left));
+  }
+  @media (min-width: 640px) {
+    .toast-stack { left: auto; }
+  }
 }
 
 /* ── Scrollbars ─────────────────────────────────────── */

@@ -14,9 +14,9 @@ const faint    = '#5E7080';
 
 function StatCard({ label, value, color }) {
   return (
-    <div className="p-4 text-center rounded-card" style={{ background: surface, border: `0.5px solid ${border}` }}>
-      <p className="uppercase font-semibold mb-1" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>{label}</p>
-      <p className="text-xl font-bold" style={{ color }}>{value}</p>
+    <div className="px-4 py-3 sm:p-4 flex sm:block items-center justify-between gap-3 sm:text-center min-w-0 rounded-card" style={{ background: surface, border: `0.5px solid ${border}` }}>
+      <p className="uppercase font-semibold sm:mb-1" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>{label}</p>
+      <p className="text-base sm:text-lg lg:text-xl font-bold tabular-nums break-words" style={{ color }}>{value}</p>
     </div>
   );
 }
@@ -48,7 +48,7 @@ export default function PartnerShare({ sales, stats, user, showToast }) {
     <div className="space-y-4 pb-20">
 
       {/* Stats row */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
         <StatCard label="Total"   value={formatCurrency(stats.mamaTotal)}   color="#60A5FA" />
         <StatCard label="Pending" value={formatCurrency(stats.mamaPending)} color="#FC6B6B" />
         <StatCard label="Paid"    value={formatCurrency(stats.mamaPaid)}    color="#4ADE80" />
@@ -102,9 +102,9 @@ export default function PartnerShare({ sales, stats, user, showToast }) {
               style={{ borderBottom: idx < activeList.length - 1 ? `0.5px solid ${subtle}` : 'none', background: selectedMamaSales.includes(s.id) ? 'rgba(252,107,107,0.06)' : 'transparent' }}
             >
               {mamaTab === 'pending' && <input type="checkbox" readOnly checked={selectedMamaSales.includes(s.id)} className="w-4 h-4 accent-red-400"/>}
-              <div className="flex-1">
-                <p className="font-medium text-sm" style={{ color: primary }}>{s.suitId}</p>
-                <p className="text-xs" style={{ color: faint }}>{s.brand}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm truncate" style={{ color: primary }}>{s.suitId}</p>
+                <p className="text-xs truncate" style={{ color: faint }}>{s.brand}</p>
               </div>
               <span className="font-bold text-sm" style={{ color: mamaTab === 'pending' ? '#FC6B6B' : '#4ADE80' }}>{s.mamaShare}</span>
             </div>

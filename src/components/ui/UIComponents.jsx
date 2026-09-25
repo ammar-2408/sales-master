@@ -8,7 +8,7 @@ export const LoadingSpinner = () => (
 );
 
 export const ToastContainer = ({ toasts, removeToast }) => (
-  <div className="fixed bottom-4 right-4 z-[300] flex flex-col gap-2 w-full max-w-xs px-4 md:px-0 pointer-events-none">
+  <div className="toast-stack z-[300] flex flex-col gap-2 sm:w-full sm:max-w-xs pointer-events-none">
     {toasts.map(toast => (
       <div
         key={toast.id}
@@ -23,7 +23,7 @@ export const ToastContainer = ({ toasts, removeToast }) => (
         {toast.type === 'error'
           ? <XCircle size={18} className="shrink-0" />
           : <CheckCircle size={18} className="shrink-0" />}
-        <p className="text-sm font-semibold flex-1">{toast.message}</p>
+        <p className="text-sm font-semibold flex-1 min-w-0 break-words">{toast.message}</p>
         <button onClick={() => removeToast(toast.id)} className="ml-2 opacity-60 hover:opacity-100 transition-opacity">
           <X size={15}/>
         </button>
@@ -73,7 +73,7 @@ export const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message, 
 
 export const Card = ({ title, value, subtext, icon: Icon, isAmber }) => (
   <div
-    className="p-5 rounded-card flex flex-col justify-between transition-all duration-150 cursor-default h-full group"
+    className="p-4 sm:p-5 min-w-0 rounded-card flex flex-col justify-between transition-all duration-150 cursor-default h-full group"
     style={{
       background: isAmber ? 'rgba(245,166,35,0.08)' : '#1C2530',
       border:     isAmber ? '0.5px solid rgba(245,166,35,0.3)' : '0.5px solid #2E3A47',
@@ -86,7 +86,7 @@ export const Card = ({ title, value, subtext, icon: Icon, isAmber }) => (
     </div>
     <div>
       <p className="uppercase mb-1.5" style={{ fontSize: '11px', letterSpacing: '0.06em', fontWeight: 600, color: '#8D9BAA' }}>{title}</p>
-      <h3 className="text-2xl font-bold leading-tight break-words" style={{ color: isAmber ? '#F5A623' : '#F0F4F8' }}>{value}</h3>
+      <h3 className="text-lg sm:text-xl 2xl:text-2xl font-bold leading-tight break-words tabular-nums" style={{ color: isAmber ? '#F5A623' : '#F0F4F8' }}>{value}</h3>
       {subtext && <p className="text-xs mt-1" style={{ color: '#5E7080' }}>{subtext}</p>}
     </div>
   </div>

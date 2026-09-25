@@ -17,6 +17,7 @@ import { playSound } from './utils/helpers';
 import CustomerDetailModal from './components/CustomerDetailModal';
 import AddStock from './views/AddStock'; 
 import AvailableStock from './views/AvailableStock';
+import { menuItems } from './config/navigation';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -188,7 +189,7 @@ export default function App() {
       <div className="flex-1 flex flex-col min-w-0 md:h-full md:overflow-hidden relative" style={{ paddingLeft: 'var(--safe-left)', paddingRight: 'var(--safe-right)' }}>
          <div className="md:hidden sticky top-0 z-[25] flex shrink-0 justify-between items-center px-4" style={{ background: '#131920', borderBottom: '0.5px solid #2E3A47', height: 'var(--mobile-header-h)', paddingTop: 'var(--safe-top)' }}>
             <button onClick={() => setMobileMenuOpen(true)} className="p-2 rounded-lg active:scale-95 transition-transform" style={{ background: 'rgba(245,166,35,0.12)', color: '#F5A623' }}><Menu size={20}/></button>
-            <h2 className="font-semibold uppercase tracking-wider text-xs" style={{ color: '#8D9BAA' }}>{activeTab === 'mama' ? 'PARTNER SHARE' : activeTab}</h2>
+            <h2 className="font-semibold uppercase tracking-wider text-xs truncate px-2" style={{ color: '#8D9BAA' }}>{menuItems.find(m => m.id === activeTab)?.label ?? activeTab}</h2>
             <div className="w-8"/>
          </div>
 

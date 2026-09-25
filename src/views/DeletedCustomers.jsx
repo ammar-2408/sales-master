@@ -70,7 +70,7 @@ export default function DeletedCustomers({ customers, user, showToast, setViewin
           </div>
         ) : (
           <div className="flex-1 md:overflow-y-auto min-h-0 pb-4">
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+            <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
               {deletedCust.map(c => (
                 <div
                   key={c.id}
@@ -80,9 +80,9 @@ export default function DeletedCustomers({ customers, user, showToast, setViewin
                   onMouseEnter={e => e.currentTarget.style.borderColor = '#4A5E72'}
                   onMouseLeave={e => e.currentTarget.style.borderColor = border}
                 >
-                  <div className="flex justify-between items-start mb-2">
-                    <p className="font-semibold text-sm" style={{ color: primary }}>{c.name}</p>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(252,107,107,0.1)', color: '#FC6B6B', border: '0.5px solid rgba(252,107,107,0.25)' }}>Deleted</span>
+                  <div className="flex justify-between items-start gap-2 mb-2">
+                    <p className="font-semibold text-sm min-w-0 break-words" style={{ color: primary }}>{c.name}</p>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0"style={{ background: 'rgba(252,107,107,0.1)', color: '#FC6B6B', border: '0.5px solid rgba(252,107,107,0.25)' }}>Deleted</span>
                   </div>
                   <div className="flex justify-between text-xs mb-3" style={{ color: faint }}>
                     <span>Balance:</span>

@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, Shirt, ShoppingCart, Users, Handshake, BarChart3, Archive, LogOut, X, PlusCircle, CheckCircle, Download } from 'lucide-react';
-
-const menuItems = [
-  { id: 'dashboard',       icon: LayoutDashboard, label: 'Dashboard' },
-  { id: 'add_stock',       icon: PlusCircle,      label: 'Add Stock' },
-  { id: 'available_stock', icon: CheckCircle,     label: 'Available Stock' },
-  { id: 'inventory',       icon: Shirt,           label: 'All Inventory' },
-  { id: 'sales',           icon: ShoppingCart,    label: 'Sales' },
-  { id: 'customers',       icon: Users,           label: 'Customers' },
-  { id: 'mama',            icon: Handshake,       label: 'Partner Share' },
-  { id: 'insights',        icon: BarChart3,       label: 'Insights' },
-  { id: 'trash',           icon: Archive,         label: 'Deleted Customers' },
-];
+import { Shirt, LogOut, X, Download } from 'lucide-react';
+import { menuItems } from '../config/navigation';
 
 export default function Sidebar({ activeTab, setActiveTab, userProfileName, mobileMenuOpen, setMobileMenuOpen, onLogout, setViewingCustomer }) {
 

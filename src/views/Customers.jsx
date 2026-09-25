@@ -142,7 +142,8 @@ export default function Customers({ customers, payments, sales, user, showToast,
           <div className="flex gap-2">
             <input
               inputMode="numeric" type="number" onKeyDown={handleNumberInput}
-              style={{ ...inputCls, width: '120px' }}
+              className="flex-1 min-w-0 sm:flex-none sm:w-[120px]"
+              style={{ ...inputCls, width: undefined }}
               placeholder="Amount"
               value={paymentForm.amount}
               onChange={e => setPaymentForm({ ...paymentForm, amount: e.target.value })}
@@ -170,7 +171,7 @@ export default function Customers({ customers, payments, sales, user, showToast,
 
       {/* Customer grid */}
       <div className="flex-1 md:overflow-y-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
           {filteredCust.map(c => {
             const bal = (c.totalBill || 0) - (c.totalPaid || 0);
             const cleared = bal <= 0;
@@ -188,13 +189,13 @@ export default function Customers({ customers, payments, sales, user, showToast,
                   Total: {formatCurrency(c.totalBill || 0)}
                 </span>
                 <div className="mt-2.5 space-y-1 text-[11px]">
-                  <div className="flex justify-between">
+                  <div className="flex justify-between gap-2">
                     <span style={{ color: faint }}>Remaining:</span>
-                    <b style={{ color: bal > 0 ? '#FC6B6B' : '#5E7080' }}>{formatCurrency(bal)}</b>
+                    <b className="tabular-nums text-right" style={{ color: bal > 0 ? '#FC6B6B' : '#5E7080' }}>{formatCurrency(bal)}</b>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between gap-2">
                     <span style={{ color: faint }}>Paid:</span>
-                    <b style={{ color: '#4ADE80' }}>{formatCurrency(c.totalPaid || 0)}</b>
+                    <b className="tabular-nums text-right" style={{ color: '#4ADE80' }}>{formatCurrency(c.totalPaid || 0)}</b>
                   </div>
                 </div>
                 <div className="mt-3 flex gap-1.5">
