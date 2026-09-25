@@ -159,11 +159,11 @@ export default function App() {
      };
   }, [inventory, sales, customers]);
 
-  if (authLoading) return <div className="h-viewport flex items-center justify-center bg-base"><LoadingSpinner /></div>;
+  if (authLoading) return <div className="h-viewport flex items-center justify-center bg-canvas"><LoadingSpinner /></div>;
   if (!user) return <Auth />;
 
   return (
-    <div className="flex min-h-viewport md:h-viewport font-sans md:overflow-hidden bg-base text-fg">
+    <div className="flex min-h-viewport md:h-viewport font-sans md:overflow-hidden bg-canvas text-fg">
       <ToastContainer toasts={toasts} removeToast={removeToast} />
       
       {/* GLOBAL MODAL */}
@@ -187,7 +187,7 @@ export default function App() {
       />
       
       <div className="flex-1 flex flex-col min-w-0 md:h-full md:overflow-hidden relative" style={{ paddingLeft: 'var(--safe-left)', paddingRight: 'var(--safe-right)' }}>
-         <div className="md:hidden sticky top-0 z-[25] flex shrink-0 justify-between items-center px-3 bg-base/95 backdrop-blur border-b border-line" style={{ height: 'var(--mobile-header-h)', paddingTop: 'var(--safe-top)' }}>
+         <div className="md:hidden sticky top-0 z-[25] flex shrink-0 justify-between items-center px-3 bg-canvas/95 backdrop-blur border-b border-line" style={{ height: 'var(--mobile-header-h)', paddingTop: 'var(--safe-top)' }}>
             <button onClick={() => setMobileMenuOpen(true)} aria-label="Open menu" className="ui-icon-btn text-fg-muted"><Menu size={22}/></button>
             <h2 className="font-semibold text-base text-fg truncate px-2">{menuItems.find(m => m.id === activeTab)?.label ?? activeTab}</h2>
             <div className="w-10 shrink-0"/>

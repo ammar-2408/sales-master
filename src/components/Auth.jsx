@@ -66,7 +66,7 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-viewport flex flex-col items-center overlay-safe bg-base">
+    <div className="min-h-viewport flex flex-col items-center overlay-safe bg-canvas">
       <ToastContainer toasts={toasts} removeToast={removeToast} />
 
       <div className="ui-card my-auto w-full max-w-md p-6 sm:p-8 rounded-modal">
@@ -80,7 +80,7 @@ export default function Auth() {
         </div>
 
         {/* Toggle tabs */}
-        <div className="flex mb-6 rounded-lg p-1 bg-base border border-line">
+        <div className="flex mb-6 rounded-lg p-1 bg-canvas border border-line">
           {['Login', 'Sign Up'].map((label, i) => {
             const active = isLoginView === (i === 0);
             return (

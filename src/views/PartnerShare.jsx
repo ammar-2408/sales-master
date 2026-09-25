@@ -33,6 +33,7 @@ export default function PartnerShare({ sales, stats, user, showToast }) {
   const toggle = (id) => setSelectedMamaSales(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
   const pendingAll = sales.filter(s => !s.mamaPaid);
   const allSelected = pendingAll.length > 0 && pendingAll.every(s => selectedMamaSales.includes(s.id));
+  const toggleSelectAll = () => setSelectedMamaSales(allSelected ? [] : pendingAll.map(s => s.id));
 
   const activeList = mamaTab === 'pending' ? sortedPending : sortedPaid;
 
@@ -66,15 +67,23 @@ export default function PartnerShare({ sales, stats, user, showToast }) {
 
       {/* Table card */}
       <div className="ui-card overflow-hidden">
-        <div className="flex justify-between items-center gap-3 px-4 sm:px-5 py-3 min-h-[3.5rem] border-b border-line">
+        <div className="flex flex-wrap justify-between items-center gap-x-3 gap-y-2 px-4 sm:px-5 py-3 min-h-[3.5rem] border-b border-line">
           <h3 className="ui-section-title text-sm sm:text-base flex items-center gap-2 min-w-0">
             {mamaTab === 'pending' ? <AlertTriangle size={16} className="shrink-0 text-warning"/> : <History size={16} className="shrink-0 text-success"/>}
             <span className="truncate">{mamaTab === 'pending' ? 'Pending Payments' : 'Payment History'}</span>
           </h3>
-          {mamaTab === 'pending' && selectedMamaSales.length > 0 && (
-            <button onClick={() => handleMarkPaid(true)}
-              className="ui-btn-tint shrink-0 bg-success/10 text-success border-success/30 hover:bg-success/20"
-            >Mark Paid ({selectedMamaSales.length})</button>
+          {mamaTab === 'pending' && pendingAll.length > 0 && (
+            <div className="flex items-center gap-2 shrink-0">
+              <button onClick={toggleSelectAll}
+                aria-pressed={allSelected}
+                className="ui-btn-tint bg-white/5 text-fg-muted border-line hover:text-fg"
+              >{allSelected ? 'Clear Selection' : `Select All (${pendingAll.length})`}</button>
+              {selectedMamaSales.length > 0 && (
+                <button onClick={() => handleMarkPaid(true)}
+                  className="ui-btn-tint bg-success/10 text-success border-success/30 hover:bg-success/20"
+                >Mark Paid ({selectedMamaSales.length})</button>
+              )}
+            </div>
           )}
         </div>
 
@@ -106,7 +115,7 @@ export default function PartnerShare({ sales, stats, user, showToast }) {
               <tr>
                 {mamaTab === 'pending' && (
                   <th className="px-4 py-3 w-14 text-center">
-                    <input type="checkbox" aria-label="Select all pending" checked={allSelected} onChange={() => setSelectedMamaSales(allSelected ? [] : pendingAll.map(s => s.id))} className="w-4 h-4 accent-accent cursor-pointer align-middle"/>
+                    <input type="checkbox" aria-label="Select all pending" checked={allSelected} onChange={toggleSelectAll} className="w-4 h-4 accent-accent cursor-pointer align-middle"/>
                   </th>
                 )}
                 <th className="px-4 py-3 text-left">Item Details</th>

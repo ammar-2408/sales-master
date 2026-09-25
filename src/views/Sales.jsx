@@ -147,7 +147,7 @@ export default function Sales({ inventory, customers, user, showToast }) {
                   </div>
                 </div>
               ))}
-              <div className="flex justify-between items-center px-4 py-3 bg-base">
+              <div className="flex justify-between items-center px-4 py-3 bg-canvas">
                 <span className="font-semibold text-sm text-fg">Total Bill</span>
                 <span className="font-bold text-lg tabular-nums text-fg">{formatCurrency(cartTotal)}</span>
               </div>

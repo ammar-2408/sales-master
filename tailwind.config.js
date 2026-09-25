@@ -19,7 +19,8 @@ export default {
     extend: {
       colors: {
         // Graphite & Indigo — contrast ratios noted against surface (#171A21)
-        base:      '#0F1115',
+        // Not named "base": that would collide with the text-base font-size utility.
+        canvas:    '#0F1115',
         surface:   '#171A21',
         elevated:  '#1F232C',
         sidebar:   '#0B0D11',
