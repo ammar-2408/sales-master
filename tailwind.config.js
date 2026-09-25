@@ -28,7 +28,7 @@ export default {
           DEFAULT: '#2A2F3A',
           subtle:  '#22262F',
           strong:  '#3A404D',
-          input:   '#646C7A', // 3.3:1 — meets 1.4.11 non-text contrast for form fields
+          input:   '#6B7383', // ≥3.3:1 on surface and elevated — meets 1.4.11 non-text contrast for form fields
         },
 
         fg: {
