@@ -66,7 +66,7 @@ export default function Inventory({ inventory, user, showToast }) {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden pb-20">
+    <div className="flex flex-col pb-20 md:h-full md:overflow-hidden">
       <ConfirmationModal
         isOpen={modalConfig.isOpen}
         onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
@@ -76,10 +76,10 @@ export default function Inventory({ inventory, user, showToast }) {
         isDanger
       />
 
-      <div className="flex-1 flex flex-col min-h-0 overflow-hidden rounded-card" style={{ border: `0.5px solid ${border}`, background: surface }}>
+      <div className="flex-1 flex flex-col min-h-0 md:overflow-hidden rounded-card" style={{ border: `0.5px solid ${border}`, background: surface }}>
 
         {/* Search header */}
-        <div className="flex items-center gap-3 px-4 py-3 shrink-0" style={{ borderBottom: `0.5px solid ${border}` }}>
+        <div className="sticky md:static z-10 flex items-center gap-3 px-4 py-3 shrink-0 rounded-t-card" style={{ borderBottom: `0.5px solid ${border}`, background: surface, top: 'var(--mobile-header-h)' }}>
           <Search size={17} style={{ color: faint }} />
           <input
             ref={searchRef}
@@ -98,8 +98,8 @@ export default function Inventory({ inventory, user, showToast }) {
         </div>
 
         {/* Mobile cards */}
-        <div className="md:hidden flex-1 overflow-y-auto">
-          <div className="grid grid-cols-2 gap-2 p-2 pb-24">
+        <div className="md:hidden">
+          <div className="grid grid-cols-2 gap-2 p-2">
             {filteredInv.length === 0 ? (
               <div className="col-span-2 flex flex-col items-center justify-center p-10 opacity-40 text-sm">
                 <Package size={28} className="mb-2"/>

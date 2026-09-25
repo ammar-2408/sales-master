@@ -32,7 +32,7 @@ export default function DeletedCustomers({ customers, user, showToast, setViewin
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden pb-20">
+    <div className="flex flex-col pb-20 md:h-full md:overflow-hidden">
       <ConfirmationModal
         isOpen={modalConfig.isOpen}
         onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
@@ -42,7 +42,7 @@ export default function DeletedCustomers({ customers, user, showToast, setViewin
         isDanger={false}
       />
 
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col md:h-full">
         <div className="shrink-0 mb-4">
           <h2 className="text-xl font-bold mb-3 flex items-center gap-2" style={{ color: primary }}>
             <Archive size={20} style={{ color: '#FC6B6B' }}/> Deleted Customers
@@ -64,12 +64,12 @@ export default function DeletedCustomers({ customers, user, showToast, setViewin
         </div>
 
         {deletedCust.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center opacity-40">
+          <div className="flex-1 py-12 md:py-0 flex flex-col items-center justify-center opacity-40">
             <Archive size={48} className="mb-3" style={{ color: faint }}/>
             <p className="text-sm" style={{ color: faint }}>{search ? `No results for "${search}"` : 'No deleted customers'}</p>
           </div>
         ) : (
-          <div className="flex-1 overflow-y-auto min-h-0 pb-4">
+          <div className="flex-1 md:overflow-y-auto min-h-0 pb-4">
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
               {deletedCust.map(c => (
                 <div

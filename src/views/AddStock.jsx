@@ -76,7 +76,7 @@ export default function AddStock({ inventory, user, showToast }) {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto items-center justify-center py-8 px-4">
+    <div className="flex flex-col md:h-full md:overflow-y-auto items-center justify-center py-8 px-4">
       <div className="w-full max-w-xl p-6 sm:p-8 rounded-card" style={{ background: surface, border: `0.5px solid ${border}` }}>
 
         {/* Header */}

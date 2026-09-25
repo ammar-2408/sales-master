@@ -162,7 +162,7 @@ export default function App() {
   if (!user) return <Auth />;
 
   return (
-    <div className="flex h-dvh font-sans overflow-hidden" style={{ background: '#131920', color: '#F0F4F8' }}>
+    <div className="flex min-h-viewport md:h-viewport font-sans md:overflow-hidden" style={{ background: '#131920', color: '#F0F4F8' }}>
       <ToastContainer toasts={toasts} removeToast={removeToast} />
       
       {/* GLOBAL MODAL */}
@@ -185,14 +185,14 @@ export default function App() {
         setViewingCustomer={setViewingCustomer}
       />
       
-      <div className="flex-1 flex flex-col h-full overflow-hidden relative" style={{ paddingLeft: 'var(--safe-left)', paddingRight: 'var(--safe-right)' }}>
-         <div className="md:hidden flex shrink-0 justify-between items-center px-4 py-3" style={{ borderBottom: '0.5px solid #2E3A47', paddingTop: 'calc(0.75rem + var(--safe-top))' }}>
+      <div className="flex-1 flex flex-col min-w-0 md:h-full md:overflow-hidden relative" style={{ paddingLeft: 'var(--safe-left)', paddingRight: 'var(--safe-right)' }}>
+         <div className="md:hidden sticky top-0 z-[25] flex shrink-0 justify-between items-center px-4" style={{ background: '#131920', borderBottom: '0.5px solid #2E3A47', height: 'var(--mobile-header-h)', paddingTop: 'var(--safe-top)' }}>
             <button onClick={() => setMobileMenuOpen(true)} className="p-2 rounded-lg active:scale-95 transition-transform" style={{ background: 'rgba(245,166,35,0.12)', color: '#F5A623' }}><Menu size={20}/></button>
             <h2 className="font-semibold uppercase tracking-wider text-xs" style={{ color: '#8D9BAA' }}>{activeTab === 'mama' ? 'PARTNER SHARE' : activeTab}</h2>
             <div className="w-8"/>
          </div>
 
-         <div className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth animate-fade-in">
+         <div className="flex-1 md:overflow-y-auto p-4 md:p-8 scroll-smooth animate-fade-in">
             {activeTab === 'dashboard' && <Dashboard stats={stats} sales={sales} />}
 
             {activeTab === 'add_stock' && <AddStock inventory={inventory} user={user} showToast={showToast} />}

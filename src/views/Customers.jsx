@@ -100,7 +100,7 @@ export default function Customers({ customers, payments, sales, user, showToast,
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden gap-4 pb-20">
+    <div className="flex flex-col gap-4 pb-20 md:h-full md:overflow-hidden">
       <ConfirmationModal
         isOpen={modalConfig.isOpen}
         onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
@@ -157,7 +157,7 @@ export default function Customers({ customers, payments, sales, user, showToast,
       </div>
 
       {/* Search customers */}
-      <div className="shrink-0 flex items-center gap-2 px-3 py-2.5 rounded-lg" style={{ background: surface, border: `0.5px solid ${border}` }}>
+      <div className="shrink-0 sticky md:static z-10 flex items-center gap-2 px-3 py-2.5 rounded-lg" style={{ background: surface, border: `0.5px solid ${border}`, top: 'calc(var(--mobile-header-h) + 0.5rem)' }}>
         <Search size={16} style={{ color: faint }}/>
         <input
           className="bg-transparent outline-none flex-1 font-medium"
@@ -169,7 +169,7 @@ export default function Customers({ customers, payments, sales, user, showToast,
       </div>
 
       {/* Customer grid */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 md:overflow-y-auto">
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
           {filteredCust.map(c => {
             const bal = (c.totalBill || 0) - (c.totalPaid || 0);

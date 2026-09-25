@@ -25,11 +25,11 @@ export default function AvailableStock({ inventory }) {
   const totalValue = useMemo(() => availableItems.reduce((a, i) => a + (Number(i.orgPrice) || 0), 0), [availableItems]);
 
   return (
-    <div className="flex flex-col h-full overflow-hidden pb-20">
-      <div className="flex-1 flex flex-col overflow-hidden min-h-0 rounded-card" style={{ background: surface, border: `0.5px solid ${border}` }}>
+    <div className="flex flex-col pb-20 md:h-full md:overflow-hidden">
+      <div className="flex-1 flex flex-col md:overflow-hidden min-h-0 rounded-card" style={{ background: surface, border: `0.5px solid ${border}` }}>
 
         {/* Search */}
-        <div className="flex items-center gap-3 px-4 py-3 shrink-0 rounded-t-card" style={{ borderBottom: `0.5px solid ${border}` }}>
+        <div className="sticky md:static z-10 flex items-center gap-3 px-4 py-3 shrink-0 rounded-t-card" style={{ borderBottom: `0.5px solid ${border}`, background: surface, top: 'var(--mobile-header-h)' }}>
           <Search size={17} style={{ color: faint }}/>
           <input
             ref={searchRef}
@@ -48,8 +48,8 @@ export default function AvailableStock({ inventory }) {
         </div>
 
         {/* Mobile cards */}
-        <div className="md:hidden flex-1 overflow-y-auto">
-          <div className="grid grid-cols-2 gap-2 p-2 pb-24">
+        <div className="md:hidden">
+          <div className="grid grid-cols-2 gap-2 p-2">
             {availableItems.length === 0 ? (
               <div className="col-span-2 flex flex-col items-center justify-center p-10 text-sm opacity-40">
                 <Package size={28} className="mb-2"/>No available stock found.

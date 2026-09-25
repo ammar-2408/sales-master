@@ -56,14 +56,14 @@ export default function Insights({ customers, setViewingCustomer, setCustomerMod
   ];
 
   return (
-    <div className="flex flex-col h-full overflow-hidden pb-20">
-      <div className="p-4 sm:p-0 flex flex-col h-full">
+    <div className="flex flex-col pb-20 md:h-full md:overflow-hidden">
+      <div className="p-4 sm:p-0 flex flex-col md:h-full">
 
         {/* Landing cards */}
         {!insightView && (
           <>
             <h2 className="text-xl font-bold mb-5" style={{ color: primary }}>Business Insights</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:overflow-y-auto">
               {insightCards.map(card => (
                 <div
                   key={card.id}
@@ -89,7 +89,7 @@ export default function Insights({ customers, setViewingCustomer, setCustomerMod
 
         {/* Detail view */}
         {insightView && (
-          <div className="flex flex-col h-full overflow-hidden">
+          <div className="flex flex-col md:h-full md:overflow-hidden">
             <div className="shrink-0 mb-4">
               <button
                 onClick={() => setInsightView(null)}
@@ -111,9 +111,9 @@ export default function Insights({ customers, setViewingCustomer, setCustomerMod
               </p>
             </div>
 
-            <div className="flex-1 overflow-y-auto min-h-0 pb-4">
+            <div className="flex-1 md:overflow-y-auto min-h-0 pb-4">
               {activeList.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-center opacity-60">
+                <div className="py-12 md:py-0 md:h-full flex flex-col items-center justify-center text-center opacity-60">
                   <div className="p-6 rounded-full mb-4" style={{ background: surface }}>
                     <CheckCircle size={56} style={{ color: isRiskView ? '#4ADE80' : '#60A5FA' }}/>
                   </div>

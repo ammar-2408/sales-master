@@ -45,7 +45,7 @@ export default function Sidebar({ activeTab, setActiveTab, userProfileName, mobi
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 z-30 md:hidden"
-          style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+          style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', touchAction: 'none' }}
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
@@ -77,7 +77,7 @@ export default function Sidebar({ activeTab, setActiveTab, userProfileName, mobi
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto overscroll-contain">
           {menuItems.map(item => {
             const isActive = activeTab === item.id;
             return (
