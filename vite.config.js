@@ -12,8 +12,8 @@ export default defineConfig({
         name: 'Sales Master',
         short_name: 'Sales Master',
         description: 'Retail Management System for your clothing shop',
-        theme_color: '#131920',
-        background_color: '#131920',
+        theme_color: '#0F1115',
+        background_color: '#0F1115',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
@@ -42,6 +42,15 @@ export default defineConfig({
             options: {
               cacheName: 'google-fonts-cache',
               expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] }
             }
           }
         ]
