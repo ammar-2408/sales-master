@@ -19,7 +19,7 @@ const inputCls = {
   outline: 'none',
   width: '100%',
   padding: '11px 14px',
-  fontSize: 14,
+  fontSize: 16,
   transition: 'border-color 150ms ease, box-shadow 150ms ease',
 };
 
@@ -123,7 +123,7 @@ export default function Sales({ inventory, customers, user, showToast }) {
             <Search size={16} style={{ color: faint }} />
             <input
               className="flex-1 bg-transparent outline-none font-medium"
-              style={{ color: primary, fontSize: 14 }}
+              style={{ color: primary, fontSize: 16 }}
               placeholder="Type ID or brand..."
               value={itemSearchQuery}
               onChange={e => setItemSearchQuery(e.target.value)}

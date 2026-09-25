@@ -19,7 +19,7 @@ const inputCls = {
   color: primary,
   outline: 'none',
   padding: '9px 12px',
-  fontSize: 14,
+  fontSize: 16,
   transition: 'border-color 150ms ease, box-shadow 150ms ease',
 };
 const fi = e => { e.target.style.borderColor = '#F5A623'; e.target.style.boxShadow = '0 0 0 3px rgba(245,166,35,0.15)'; };

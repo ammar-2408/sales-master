@@ -34,7 +34,7 @@ export default function AvailableStock({ inventory }) {
           <input
             ref={searchRef}
             className="bg-transparent outline-none flex-1 font-medium"
-            style={{ color: primary, fontSize: 14 }}
+            style={{ color: primary, fontSize: 16 }}
             placeholder="Search available stock..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}

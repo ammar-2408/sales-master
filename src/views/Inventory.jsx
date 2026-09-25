@@ -21,7 +21,7 @@ const inputCls = {
   outline: 'none',
   width: '100%',
   padding: '9px 12px',
-  fontSize: 14,
+  fontSize: 16,
   transition: 'border-color 150ms ease, box-shadow 150ms ease',
 };
 const focusIn  = e => { e.target.style.borderColor = '#F5A623'; e.target.style.boxShadow = '0 0 0 3px rgba(245,166,35,0.15)'; };
@@ -84,7 +84,7 @@ export default function Inventory({ inventory, user, showToast }) {
           <input
             ref={searchRef}
             className="bg-transparent outline-none flex-1 font-medium"
-            style={{ color: primary, fontSize: 14 }}
+            style={{ color: primary, fontSize: 16 }}
             placeholder="Search by ID or brand..."
             value={inventorySearch}
             onChange={e => setInventorySearch(e.target.value)}

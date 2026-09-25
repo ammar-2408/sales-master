@@ -52,7 +52,7 @@ export default function DeletedCustomers({ customers, user, showToast, setViewin
             <Search size={15} style={{ color: faint }}/>
             <input
               className="bg-transparent outline-none flex-1 font-medium"
-              style={{ color: primary, fontSize: 14 }}
+              style={{ color: primary, fontSize: 16 }}
               placeholder="Search deleted customers..."
               value={search}
               onChange={e => setSearch(e.target.value)}

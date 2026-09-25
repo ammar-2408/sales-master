@@ -21,7 +21,7 @@ const inputCls = {
   outline: 'none',
   width: '100%',
   padding: '10px 12px',
-  fontSize: 14,
+  fontSize: 16,
   transition: 'border-color 150ms ease, box-shadow 150ms ease',
 };
 const fi  = e => { e.target.style.borderColor = '#F5A623'; e.target.style.boxShadow = '0 0 0 3px rgba(245,166,35,0.15)'; };
@@ -161,7 +161,7 @@ export default function Customers({ customers, payments, sales, user, showToast,
         <Search size={16} style={{ color: faint }}/>
         <input
           className="bg-transparent outline-none flex-1 font-medium"
-          style={{ color: primary, fontSize: 14 }}
+          style={{ color: primary, fontSize: 16 }}
           placeholder="Filter customers..."
           value={customerSearch}
           onChange={e => setCustomerSearch(e.target.value)}

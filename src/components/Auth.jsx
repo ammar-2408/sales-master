@@ -14,7 +14,7 @@ const inputStyle = {
   outline: 'none',
   width: '100%',
   padding: '11px 14px',
-  fontSize: '14px',
+  fontSize: '16px',
   transition: 'border-color 150ms ease, box-shadow 150ms ease',
 };
 
