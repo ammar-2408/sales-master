@@ -79,10 +79,10 @@ export default function Auth() {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center p-4" style={{ background: '#131920' }}>
+    <div className="min-h-viewport flex flex-col items-center overlay-safe" style={{ background: '#131920' }}>
       <ToastContainer toasts={toasts} removeToast={removeToast} />
 
-      <div className="w-full max-w-md p-8 rounded-modal" style={{ background: '#1C2530', border: '0.5px solid #2E3A47' }}>
+      <div className="my-auto w-full max-w-md p-6 sm:p-8 rounded-modal" style={{ background: '#1C2530', border: '0.5px solid #2E3A47' }}>
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center p-3 rounded-xl mb-4" style={{ background: 'rgba(245,166,35,0.12)', color: '#F5A623' }}>

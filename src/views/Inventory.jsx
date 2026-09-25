@@ -184,8 +184,8 @@ export default function Inventory({ inventory, user, showToast }) {
 
       {/* Edit modal */}
       {editingItem && (
-        <div className="fixed inset-0 z-[250] flex items-center justify-center p-4 animate-fade-in" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
-          <div className="w-full max-w-sm p-6 rounded-modal" style={{ background: '#222E3C', border: `0.5px solid ${border}` }}>
+        <div className="fixed inset-0 z-[250] flex justify-center overlay-safe overflow-y-auto overscroll-contain animate-fade-in" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
+          <div className="my-auto w-full max-w-sm p-6 rounded-modal" style={{ background: '#222E3C', border: `0.5px solid ${border}` }}>
             <h3 className="font-bold text-lg mb-5 text-center" style={{ color: primary }}>Edit Item</h3>
             <form onSubmit={handleUpdateItem} className="space-y-3">
               <div>

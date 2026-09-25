@@ -88,8 +88,8 @@ export default function CustomerDetailModal({ activeCustomer, onClose, user, pay
   const balance = (activeCustomer.totalBill || 0) - (activeCustomer.totalPaid || 0);
 
   return (
-    <div className="fixed inset-0 z-[250] flex items-center justify-center p-4 animate-fade-in overflow-hidden" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
-      <div className="w-full max-w-lg max-h-[88vh] flex flex-col rounded-modal" style={{ background: elevated, border: `0.5px solid ${border}` }}>
+    <div className="fixed inset-0 z-[250] flex justify-center overlay-safe overflow-y-auto overscroll-contain animate-fade-in" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
+      <div className="my-auto w-full max-w-lg max-h-modal flex flex-col rounded-modal" style={{ background: elevated, border: `0.5px solid ${border}` }}>
 
         {/* Header */}
         <div className="flex justify-between items-start p-5 shrink-0" style={{ borderBottom: `0.5px solid ${border}` }}>

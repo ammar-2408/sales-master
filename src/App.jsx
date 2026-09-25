@@ -158,7 +158,7 @@ export default function App() {
      };
   }, [inventory, sales, customers]);
 
-  if (authLoading) return <div className="h-screen flex items-center justify-center" style={{ background: '#131920' }}><LoadingSpinner /></div>;
+  if (authLoading) return <div className="h-viewport flex items-center justify-center" style={{ background: '#131920' }}><LoadingSpinner /></div>;
   if (!user) return <Auth />;
 
   return (

@@ -35,8 +35,8 @@ export const ToastContainer = ({ toasts, removeToast }) => (
 export const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message, isDanger }) => {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-[250] flex items-center justify-center p-4 animate-fade-in" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
-      <div className="p-6 w-[95%] max-w-sm rounded-modal" style={{ background: '#222E3C', border: '0.5px solid #2E3A47' }}>
+    <div className="fixed inset-0 z-[250] flex justify-center overlay-safe overflow-y-auto overscroll-contain animate-fade-in" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
+      <div className="my-auto p-6 w-[95%] max-w-sm rounded-modal" style={{ background: '#222E3C', border: '0.5px solid #2E3A47' }}>
         <div className="flex flex-col items-center text-center">
           <div className="p-4 rounded-full mb-4" style={{ background: isDanger ? 'rgba(252,107,107,0.1)' : 'rgba(96,165,250,0.1)', color: isDanger ? '#FC6B6B' : '#60A5FA' }}>
             {isDanger ? <Trash2 size={28} /> : <RotateCcw size={28} />}

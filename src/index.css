@@ -59,6 +59,12 @@ html, body, #root {
 @layer utilities {
   .h-viewport     { height: 100vh; height: 100dvh; }
   .min-h-viewport { min-height: 100vh; min-height: 100dvh; }
+  .max-h-modal    { max-height: 88vh; max-height: 88dvh; }
+
+  /* Modal overlay padding: at least 1rem, more where the device has insets. */
+  .overlay-safe {
+    padding: max(1rem, var(--safe-top)) max(1rem, var(--safe-right)) max(1rem, var(--safe-bottom)) max(1rem, var(--safe-left));
+  }
 }
 
 /* ── Scrollbars ─────────────────────────────────────── */
