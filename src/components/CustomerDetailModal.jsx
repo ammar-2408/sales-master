@@ -99,7 +99,7 @@ export default function CustomerDetailModal({ activeCustomer, onClose, user, pay
             </h2>
             <p className="text-xs mt-0.5 uppercase font-semibold" style={{ fontSize: 11, letterSpacing: '0.06em', color: faint }}>Customer Account History</p>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg transition-colors" style={{ color: faint }}
+          <button onClick={onClose} aria-label="Close" className="p-2.5 -m-1.5 shrink-0 rounded-lg transition-colors" style={{ color: faint }}
             onMouseEnter={e => e.currentTarget.style.color = primary}
             onMouseLeave={e => e.currentTarget.style.color = faint}
           ><X size={20}/></button>
@@ -210,10 +210,11 @@ export default function CustomerDetailModal({ activeCustomer, onClose, user, pay
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="font-bold text-sm tabular-nums" style={{ color: '#60A5FA' }}>{formatCurrency(item.salePrice)}</span>
                     <button onClick={e => { e.stopPropagation(); handleReturnItem(item); }} title="Return Item"
-                      className="p-1.5 rounded-full transition-colors" style={{ color: '#FC6B6B' }}
+                      aria-label="Return item"
+                      className="p-2.5 rounded-full transition-colors" style={{ color: '#FC6B6B' }}
                       onMouseEnter={e => e.currentTarget.style.background = 'rgba(252,107,107,0.1)'}
                       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                    ><Undo2 size={14}/></button>
+                    ><Undo2 size={16}/></button>
                   </div>
                 </div>
               )) : (

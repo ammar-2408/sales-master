@@ -121,7 +121,7 @@ export default function Auth() {
             value={authPassword}
             onChange={e => setAuthPassword(e.target.value)}
             right={
-              <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ color: '#5E7080' }}>
+              <button type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? 'Hide password' : 'Show password'} className="p-2 -m-2" style={{ color: '#5E7080' }}>
                 {showPassword ? <EyeOff size={16}/> : <Eye size={16}/>}
               </button>
             }

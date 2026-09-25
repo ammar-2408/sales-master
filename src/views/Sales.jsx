@@ -167,8 +167,8 @@ export default function Sales({ inventory, customers, user, showToast }) {
                   </div>
                   <div className="flex items-center gap-3 shrink-0">
                     <span className="font-bold text-sm tabular-nums" style={{ color: primary }}>{formatCurrency(item.salePrice)}</span>
-                    <button onClick={() => removeFromCart(item.id)} className="transition-colors" style={{ color: '#FC6B6B' }}>
-                      <MinusCircle size={17}/>
+                    <button onClick={() => removeFromCart(item.id)} aria-label="Remove from cart" className="p-2.5 -m-2.5 rounded-full transition-colors" style={{ color: '#FC6B6B' }}>
+                      <MinusCircle size={18}/>
                     </button>
                   </div>
                 </div>

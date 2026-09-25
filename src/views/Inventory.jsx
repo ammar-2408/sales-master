@@ -99,9 +99,9 @@ export default function Inventory({ inventory, user, showToast }) {
 
         {/* Mobile cards */}
         <div className="md:hidden">
-          <div className="grid grid-cols-2 gap-2 p-2">
+          <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 p-2">
             {filteredInv.length === 0 ? (
-              <div className="col-span-2 flex flex-col items-center justify-center p-10 opacity-40 text-sm">
+              <div className="col-span-full flex flex-col items-center justify-center p-10 opacity-40 text-sm">
                 <Package size={28} className="mb-2"/>
                 <p>No items found</p>
               </div>
@@ -118,9 +118,9 @@ export default function Inventory({ inventory, user, showToast }) {
                     <span className="text-[10px]" style={{ color: faint }}>Cost: {i.orgPrice}</span>
                   </div>
                   {i.qty > 0 && (
-                    <div className="flex gap-1">
-                      <button onClick={() => setEditingItem(i)} className="p-1.5 rounded transition-colors" style={{ color: '#60A5FA', background: 'rgba(96,165,250,0.1)' }}><Edit size={11}/></button>
-                      <button onClick={() => setModalConfig({ isOpen: true, id: i.id })} className="p-1.5 rounded transition-colors" style={{ color: '#FC6B6B', background: 'rgba(252,107,107,0.1)' }}><Trash2 size={11}/></button>
+                    <div className="flex gap-1.5 shrink-0">
+                      <button onClick={() => setEditingItem(i)} aria-label="Edit item" className="w-9 h-9 flex items-center justify-center rounded-lg transition-colors" style={{ color: '#60A5FA', background: 'rgba(96,165,250,0.1)' }}><Edit size={15}/></button>
+                      <button onClick={() => setModalConfig({ isOpen: true, id: i.id })} aria-label="Delete item" className="w-9 h-9 flex items-center justify-center rounded-lg transition-colors" style={{ color: '#FC6B6B', background: 'rgba(252,107,107,0.1)' }}><Trash2 size={15}/></button>
                     </div>
                   )}
                 </div>

@@ -49,9 +49,9 @@ export default function AvailableStock({ inventory }) {
 
         {/* Mobile cards */}
         <div className="md:hidden">
-          <div className="grid grid-cols-2 gap-2 p-2">
+          <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 p-2">
             {availableItems.length === 0 ? (
-              <div className="col-span-2 flex flex-col items-center justify-center p-10 text-sm opacity-40">
+              <div className="col-span-full flex flex-col items-center justify-center p-10 text-sm opacity-40">
                 <Package size={28} className="mb-2"/>No available stock found.
               </div>
             ) : availableItems.map(i => (

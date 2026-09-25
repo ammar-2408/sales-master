@@ -58,7 +58,7 @@ export default function DeletedCustomers({ customers, user, showToast, setViewin
               onChange={e => setSearch(e.target.value)}
             />
             {search && (
-              <button onClick={() => setSearch('')} className="text-xs font-semibold" style={{ color: faint }}>Clear</button>
+              <button onClick={() => setSearch('')} className="text-xs font-semibold px-2 py-2 -my-2 -mr-1" style={{ color: faint }}>Clear</button>
             )}
           </div>
         </div>

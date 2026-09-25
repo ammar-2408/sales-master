@@ -57,11 +57,12 @@ export default function Sidebar({ activeTab, setActiveTab, userProfileName, mobi
             <p className="font-mono text-[10px] uppercase tracking-wider truncate" style={{ color: '#5E7080' }}>{userProfileName || 'User'}</p>
           </div>
           <button
-            className="md:hidden rounded-full p-1 hover:bg-white/10 transition-colors"
+            aria-label="Close menu"
+            className="md:hidden rounded-full p-2.5 -mr-1.5 hover:bg-white/10 transition-colors"
             style={{ color: '#8D9BAA' }}
             onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(false); }}
           >
-            <X size={16}/>
+            <X size={18}/>
           </button>
         </div>
 
